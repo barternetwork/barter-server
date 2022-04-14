@@ -7,3 +7,12 @@ MongoClient.connect(url, function(err, db) {
     db.close(); 
 });
 
+    MongoClient.connect(url, function (err, db) {
+	            if (err) throw err;
+	            var dbo = db.db("BarterSwap");
+	            dbo.collection("QuickSwap").find({}).toArray(function (err, result) {
+			                if (err) throw err;
+			                console.log(result);
+			                db.close();
+			            });
+	        })
