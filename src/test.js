@@ -15,3 +15,9 @@ const  scheduleCronstyle = ()=>{
 
 scheduleCronstyle();
 
+var graphql = require('./graphql')
+
+
+
+
+
