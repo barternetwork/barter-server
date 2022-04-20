@@ -40,35 +40,66 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.query = exports.ApeSwap = exports.PancakeSwap = exports.SushiSwap = exports.QuickSwap = void 0;
+exports.query3 = exports.query2 = exports.query1 = exports.UniSwap_v3 = exports.UniSwap_v2 = exports.ApeSwap = exports.PancakeSwap = exports.SushiSwap = exports.QuickSwap = void 0;
 var graphql_request_1 = require("graphql-request");
 exports.QuickSwap = new graphql_request_1.GraphQLClient('https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06');
 exports.SushiSwap = new graphql_request_1.GraphQLClient('https://api.thegraph.com/subgraphs/name/sushiswap/matic-exchange');
 exports.PancakeSwap = new graphql_request_1.GraphQLClient('https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2');
 exports.ApeSwap = new graphql_request_1.GraphQLClient('https://api.thegraph.com/subgraphs/name/hhassan01/apeswap-subgraph');
-function query(client, isPolygon, first) {
+exports.UniSwap_v2 = new graphql_request_1.GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2');
+exports.UniSwap_v3 = new graphql_request_1.GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3');
+function query1(client, first) {
     return __awaiter(this, void 0, void 0, function () {
         var query, pairs, poolsResult;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (isPolygon == true) {
-                        query = (0, graphql_request_1.gql)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        {\n        pairs(first: ", ",orderBy: reserveUSD, orderDirection: desc) {\n        id\n        token0 {\n        id     \n        symbol\n        }\n        token1 {\n        id     \n        symbol\n        }\n        totalSupply\n        reserveETH\n        trackedReserveETH\n        }\n        }\n        "], ["\n        {\n        pairs(first: ", ",orderBy: reserveUSD, orderDirection: desc) {\n        id\n        token0 {\n        id     \n        symbol\n        }\n        token1 {\n        id     \n        symbol\n        }\n        totalSupply\n        reserveETH\n        trackedReserveETH\n        }\n        }\n        "])), first);
-                        ;
-                    }
-                    else {
-                        query = (0, graphql_request_1.gql)(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n        {\n        pairs(first: ", ",orderBy: reserveUSD, orderDirection: desc) {\n        id\n        token0 {\n        id\n        symbol\n        }\n        token1 {\n        id\n        symbol\n        }\n        totalSupply\n        reserveBNB\n        trackedReserveBNB\n        }\n        }\n        "], ["\n        {\n        pairs(first: ", ",orderBy: reserveUSD, orderDirection: desc) {\n        id\n        token0 {\n        id\n        symbol\n        }\n        token1 {\n        id\n        symbol\n        }\n        totalSupply\n        reserveBNB\n        trackedReserveBNB\n        }\n        }\n        "])), first);
-                    }
+                    query = (0, graphql_request_1.gql)(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        {\n        pairs(first: ", ", orderBy: reserveETH, orderDirection: desc) {\n        id\n        token0 {\n        id     \n        symbol\n        }\n        token1 {\n        id     \n        symbol\n        }\n        totalSupply\n        reserveETH\n        trackedReserveETH\n        }\n        }\n        "], ["\n        {\n        pairs(first: ", ", orderBy: reserveETH, orderDirection: desc) {\n        id\n        token0 {\n        id     \n        symbol\n        }\n        token1 {\n        id     \n        symbol\n        }\n        totalSupply\n        reserveETH\n        trackedReserveETH\n        }\n        }\n        "])), first);
                     pairs = [];
                     return [4 /*yield*/, client.request(query)];
                 case 1:
                     poolsResult = _a.sent();
                     pairs = pairs.concat(poolsResult.pairs);
-                    console.log("receive query entries:", pairs.length);
                     return [2 /*return*/, pairs];
             }
         });
     });
 }
-exports.query = query;
-var templateObject_1, templateObject_2;
+exports.query1 = query1;
+function query2(client, first) {
+    return __awaiter(this, void 0, void 0, function () {
+        var query, pairs, poolsResult;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    query = (0, graphql_request_1.gql)(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n        {\n        pairs(first: ", ", orderBy: reserveBNB, orderDirection: desc) {\n        id\n        token0 {\n        id\n        symbol\n        }\n        token1 {\n        id\n        symbol\n        }\n        totalSupply\n        reserveBNB\n        trackedReserveBNB\n        }\n        }\n        "], ["\n        {\n        pairs(first: ", ", orderBy: reserveBNB, orderDirection: desc) {\n        id\n        token0 {\n        id\n        symbol\n        }\n        token1 {\n        id\n        symbol\n        }\n        totalSupply\n        reserveBNB\n        trackedReserveBNB\n        }\n        }\n        "])), first);
+                    pairs = [];
+                    return [4 /*yield*/, client.request(query)];
+                case 1:
+                    poolsResult = _a.sent();
+                    pairs = pairs.concat(poolsResult.pairs);
+                    return [2 /*return*/, pairs];
+            }
+        });
+    });
+}
+exports.query2 = query2;
+function query3(client, first) {
+    return __awaiter(this, void 0, void 0, function () {
+        var query, pairs, poolsResult;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    query = (0, graphql_request_1.gql)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n        {\n            pools(first: ", ", orderBy: liquidity, orderDirection: desc) {\n              id\n              feeTier\n              liquidity\n              token0 {\n                id\n                symbol\n              }\n              token1 {\n                id\n                symbol\n              }\n              totalValueLockedUSD\n              totalValueLockedETH\n            }\n          }\n        "], ["\n        {\n            pools(first: ", ", orderBy: liquidity, orderDirection: desc) {\n              id\n              feeTier\n              liquidity\n              token0 {\n                id\n                symbol\n              }\n              token1 {\n                id\n                symbol\n              }\n              totalValueLockedUSD\n              totalValueLockedETH\n            }\n          }\n        "])), first);
+                    pairs = [];
+                    return [4 /*yield*/, client.request(query)];
+                case 1:
+                    poolsResult = _a.sent();
+                    pairs = pairs.concat(poolsResult.pools);
+                    return [2 /*return*/, pairs];
+            }
+        });
+    });
+}
+exports.query3 = query3;
+var templateObject_1, templateObject_2, templateObject_3;

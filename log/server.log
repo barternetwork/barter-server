@@ -1,0 +1,526 @@
+server is running...
+dex [ 'uniswap-v3' ]
+return {
+  uniswap_v3: [
+    {
+      id: '0x2e5848efcfac935dd243c9094048ac346e198e1d',
+      feeTier: '3000',
+      liquidity: '397207105940493915986914707343',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '12.35850789680705182762482993395657',
+      totalValueLockedETH: '0.004012906420478738'
+    },
+    {
+      id: '0x06bd1af522f43bc270203e96a019b4779195b870',
+      feeTier: '3000',
+      liquidity: '370222054922916232567263130009',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '121.8760312869174834017538062647713',
+      totalValueLockedETH: '0.058196408293068806'
+    },
+    {
+      id: '0xad76da68a204fe301cc9b1c60f7166db73d35e76',
+      feeTier: '3000',
+      liquidity: '159932759263832461248144686704',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '27.57999695915693861603965173079666',
+      totalValueLockedETH: '0.01'
+    },
+    {
+      id: '0x058e136bc597082589d2cf5d0d021e22b6556a9c',
+      feeTier: '3000',
+      liquidity: '158106099875351593507670235542',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '448.9441101205981511365504915568374',
+      totalValueLockedETH: '0.2063886059655033151047426726233238'
+    },
+    {
+      id: '0x2df3f8e466d4924d86c35213dcef8c6955c6813a',
+      feeTier: '3000',
+      liquidity: '128835647668202536076057937277',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '2.209153870397322052548074310200857',
+      totalValueLockedETH: '0.001'
+    },
+    {
+      id: '0xedcfece1060e568e10425e95e35b179d5b5a2b5f',
+      feeTier: '3000',
+      liquidity: '102428942283254036119730691625',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '966.04504494284594811821067172816',
+      totalValueLockedETH: '0.37353605788858141'
+    },
+    {
+      id: '0x235c74836bf329a8c4172af9d07173f38026a49c',
+      feeTier: '500',
+      liquidity: '41019793521174930340943990207',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4443.532453404242041138762340009232',
+      totalValueLockedETH: '1.390346716280435079'
+    },
+    {
+      id: '0x7563201511e9e89d2919de06c30250dc97af927b',
+      feeTier: '3000',
+      liquidity: '28394245990140469381709294456',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4.991761488778298954714218494805195',
+      totalValueLockedETH: '0.00197780110286461'
+    },
+    {
+      id: '0xeda23168924b9a1efd9aebce61a46102f70b895c',
+      feeTier: '10000',
+      liquidity: '28022241924812228338566298123',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '9469.656787280156248760066398276086',
+      totalValueLockedETH: '3.220268492722698819'
+    },
+    {
+      id: '0x1c0ce9aaa0c12f53df3b4d8d77b82d6ad343b4e4',
+      feeTier: '3000',
+      liquidity: '25544226388055265140880085267',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '810769.393100481147383605604135357',
+      totalValueLockedETH: '263.3151067862208531719834029980345'
+    }
+  ]
+}
+dex [ 'pancakeswap', 'uniswap-v3' ]
+return {
+  pancakeswap: [
+    {
+      id: '0x647a139c8dfb95b26b7f86b0928d9f47dcb4c21f',
+      reserveBNB: '137714307848827342238823809754.6',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '30060225.79312415830903605899998',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x0a6a7021696fd9f590a3c167a143344e7d95f776',
+      reserveBNB: '31385118309628684591815932182',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '176776.695296636881099211',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x2058bbc9715ac4e1397a88c519d44223665334ac',
+      reserveBNB: '3413320231823853723128487982.645',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '58390.650107701318518321',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x2dae09b9b8ebc9774a7c25ac5532c1afd313f494',
+      reserveBNB: '2001950215146685378400931236.258',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x868856c82b07694676d1d1408608f8c6c813e9ae',
+      reserveBNB: '1667733689336258050113320157.32',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x434f3b0a3cb2d06e71e6ba7f89c7668cdd78df43',
+      reserveBNB: '1659571200000000000000000000',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '40737.834994019993942765',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xb8cbdd8254f3b5347f33654e6b0e243014a2aa29',
+      reserveBNB: '1522353386967237735180249252.21',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xc6895613ee25d943c18c67845f17303fe79eeb6d',
+      reserveBNB: '1458280450322255774934889378.799',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x9a62d9588e4cb428f1bb2e892b4c4799a29c8c9f',
+      reserveBNB: '1449274329969204333394616532.643',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xc162ec2a4242c487fa3a8b19d14406cf461170ac',
+      reserveBNB: '613207728695482009022754694.6626',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '24728.900815750704125564',
+      trackedReserveBNB: '0.000000000000000002'
+    }
+  ],
+  uniswap_v3: [
+    {
+      id: '0x2e5848efcfac935dd243c9094048ac346e198e1d',
+      feeTier: '3000',
+      liquidity: '397207105940493915986914707343',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '12.35850789680705182762482993395657',
+      totalValueLockedETH: '0.004012906420478738'
+    },
+    {
+      id: '0x06bd1af522f43bc270203e96a019b4779195b870',
+      feeTier: '3000',
+      liquidity: '370222054922916232567263130009',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '121.8760312869174834017538062647713',
+      totalValueLockedETH: '0.058196408293068806'
+    },
+    {
+      id: '0xad76da68a204fe301cc9b1c60f7166db73d35e76',
+      feeTier: '3000',
+      liquidity: '159932759263832461248144686704',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '27.57999695915693861603965173079666',
+      totalValueLockedETH: '0.01'
+    },
+    {
+      id: '0x058e136bc597082589d2cf5d0d021e22b6556a9c',
+      feeTier: '3000',
+      liquidity: '158106099875351593507670235542',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '448.9441101205981511365504915568374',
+      totalValueLockedETH: '0.2063886059655033151047426726233238'
+    },
+    {
+      id: '0x2df3f8e466d4924d86c35213dcef8c6955c6813a',
+      feeTier: '3000',
+      liquidity: '128835647668202536076057937277',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '2.209153870397322052548074310200857',
+      totalValueLockedETH: '0.001'
+    },
+    {
+      id: '0xedcfece1060e568e10425e95e35b179d5b5a2b5f',
+      feeTier: '3000',
+      liquidity: '102428942283254036119730691625',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '966.04504494284594811821067172816',
+      totalValueLockedETH: '0.37353605788858141'
+    },
+    {
+      id: '0x235c74836bf329a8c4172af9d07173f38026a49c',
+      feeTier: '500',
+      liquidity: '41019793521174930340943990207',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4443.532453404242041138762340009232',
+      totalValueLockedETH: '1.390346716280435079'
+    },
+    {
+      id: '0x7563201511e9e89d2919de06c30250dc97af927b',
+      feeTier: '3000',
+      liquidity: '28394245990140469381709294456',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4.991761488778298954714218494805195',
+      totalValueLockedETH: '0.00197780110286461'
+    },
+    {
+      id: '0xeda23168924b9a1efd9aebce61a46102f70b895c',
+      feeTier: '10000',
+      liquidity: '28022241924812228338566298123',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '9469.656787280156248760066398276086',
+      totalValueLockedETH: '3.220268492722698819'
+    },
+    {
+      id: '0x1c0ce9aaa0c12f53df3b4d8d77b82d6ad343b4e4',
+      feeTier: '3000',
+      liquidity: '25544226388055265140880085267',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '810769.393100481147383605604135357',
+      totalValueLockedETH: '263.3151067862208531719834029980345'
+    }
+  ]
+}
+2022-04-20T04:13:01.091Z the pairs has updated.
+2022-04-20T04:14:01.037Z the pairs has updated.
+dex [ 'uniswap-v3', 'pancakeswap' ]
+return {
+  pancakeswap: [
+    {
+      id: '0x647a139c8dfb95b26b7f86b0928d9f47dcb4c21f',
+      reserveBNB: '137714307848827342238823809754.6',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '30060225.79312415830903605899998',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x0a6a7021696fd9f590a3c167a143344e7d95f776',
+      reserveBNB: '31385118309628684591815932182',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '176776.695296636881099211',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x2058bbc9715ac4e1397a88c519d44223665334ac',
+      reserveBNB: '3413320231823853723128487982.645',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '58390.650107701318518321',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x2dae09b9b8ebc9774a7c25ac5532c1afd313f494',
+      reserveBNB: '2001950215146685378400931236.258',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x868856c82b07694676d1d1408608f8c6c813e9ae',
+      reserveBNB: '1667733689336258050113320157.32',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x434f3b0a3cb2d06e71e6ba7f89c7668cdd78df43',
+      reserveBNB: '1659571200000000000000000000',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '40737.834994019993942765',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xb8cbdd8254f3b5347f33654e6b0e243014a2aa29',
+      reserveBNB: '1522353386967237735180249252.21',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xc6895613ee25d943c18c67845f17303fe79eeb6d',
+      reserveBNB: '1458280450322255774934889378.799',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0x9a62d9588e4cb428f1bb2e892b4c4799a29c8c9f',
+      reserveBNB: '1449274329969204333394616532.643',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '0.000004472135953999',
+      trackedReserveBNB: '0.000000000000000002'
+    },
+    {
+      id: '0xc162ec2a4242c487fa3a8b19d14406cf461170ac',
+      reserveBNB: '613207728695482009022754694.6626',
+      token0: [Object],
+      token1: [Object],
+      totalSupply: '24728.900815750704125564',
+      trackedReserveBNB: '0.000000000000000002'
+    }
+  ],
+  uniswap_v3: [
+    {
+      id: '0x2e5848efcfac935dd243c9094048ac346e198e1d',
+      feeTier: '3000',
+      liquidity: '397207105940493915986914707343',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '12.35850789680705182762482993395657',
+      totalValueLockedETH: '0.004012906420478738'
+    },
+    {
+      id: '0x06bd1af522f43bc270203e96a019b4779195b870',
+      feeTier: '3000',
+      liquidity: '370222054922916232567263130009',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '121.8760312869174834017538062647713',
+      totalValueLockedETH: '0.058196408293068806'
+    },
+    {
+      id: '0xad76da68a204fe301cc9b1c60f7166db73d35e76',
+      feeTier: '3000',
+      liquidity: '159932759263832461248144686704',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '27.57999695915693861603965173079666',
+      totalValueLockedETH: '0.01'
+    },
+    {
+      id: '0x058e136bc597082589d2cf5d0d021e22b6556a9c',
+      feeTier: '3000',
+      liquidity: '158106099875351593507670235542',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '448.9441101205981511365504915568374',
+      totalValueLockedETH: '0.2063886059655033151047426726233238'
+    },
+    {
+      id: '0x2df3f8e466d4924d86c35213dcef8c6955c6813a',
+      feeTier: '3000',
+      liquidity: '128835647668202536076057937277',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '2.209153870397322052548074310200857',
+      totalValueLockedETH: '0.001'
+    },
+    {
+      id: '0xedcfece1060e568e10425e95e35b179d5b5a2b5f',
+      feeTier: '3000',
+      liquidity: '102428942283254036119730691625',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '966.04504494284594811821067172816',
+      totalValueLockedETH: '0.37353605788858141'
+    },
+    {
+      id: '0x235c74836bf329a8c4172af9d07173f38026a49c',
+      feeTier: '500',
+      liquidity: '41019793521174930340943990207',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4443.532453404242041138762340009232',
+      totalValueLockedETH: '1.390346716280435079'
+    },
+    {
+      id: '0x7563201511e9e89d2919de06c30250dc97af927b',
+      feeTier: '3000',
+      liquidity: '28394245990140469381709294456',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '4.991761488778298954714218494805195',
+      totalValueLockedETH: '0.00197780110286461'
+    },
+    {
+      id: '0xeda23168924b9a1efd9aebce61a46102f70b895c',
+      feeTier: '10000',
+      liquidity: '28022241924812228338566298123',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '9469.656787280156248760066398276086',
+      totalValueLockedETH: '3.220268492722698819'
+    },
+    {
+      id: '0x1c0ce9aaa0c12f53df3b4d8d77b82d6ad343b4e4',
+      feeTier: '3000',
+      liquidity: '25544226388055265140880085267',
+      token0: [Object],
+      token1: [Object],
+      totalValueLockedUSD: '810769.393100481147383605604135357',
+      totalValueLockedETH: '263.3151067862208531719834029980345'
+    }
+  ]
+}
+2022-04-20T04:15:01.043Z the pairs has updated.
+2022-04-20T04:16:01.075Z the pairs has updated.
+2022-04-20T04:17:01.076Z the pairs has updated.
+2022-04-20T04:18:01.040Z the pairs has updated.
+2022-04-20T04:19:01.076Z the pairs has updated.
+2022-04-20T04:20:01.076Z the pairs has updated.
+2022-04-20T04:21:01.043Z the pairs has updated.
+2022-04-20T04:22:01.034Z the pairs has updated.
+2022-04-20T04:23:01.075Z the pairs has updated.
+2022-04-20T04:24:01.076Z the pairs has updated.
+2022-04-20T04:25:01.051Z the pairs has updated.
+2022-04-20T04:26:01.076Z the pairs has updated.
+2022-04-20T04:27:01.076Z the pairs has updated.
+2022-04-20T04:28:01.035Z the pairs has updated.
+2022-04-20T04:29:01.042Z the pairs has updated.
+2022-04-20T04:30:01.075Z the pairs has updated.
+2022-04-20T04:31:01.075Z the pairs has updated.
+2022-04-20T04:32:01.033Z the pairs has updated.
+2022-04-20T04:33:01.073Z the pairs has updated.
+2022-04-20T04:34:01.075Z the pairs has updated.
+2022-04-20T04:35:01.035Z the pairs has updated.
+2022-04-20T04:36:01.066Z the pairs has updated.
+2022-04-20T04:37:01.054Z the pairs has updated.
+2022-04-20T04:38:01.075Z the pairs has updated.
+2022-04-20T04:39:01.075Z the pairs has updated.
+2022-04-20T04:40:01.034Z the pairs has updated.
+2022-04-20T04:41:01.025Z the pairs has updated.
+2022-04-20T04:42:01.035Z the pairs has updated.
+2022-04-20T04:43:01.075Z the pairs has updated.
+2022-04-20T04:44:01.077Z the pairs has updated.
+2022-04-20T04:45:01.074Z the pairs has updated.
+2022-04-20T04:46:01.074Z the pairs has updated.
+2022-04-20T04:47:01.074Z the pairs has updated.
+2022-04-20T04:48:01.075Z the pairs has updated.
+2022-04-20T04:49:01.075Z the pairs has updated.
+2022-04-20T04:50:01.076Z the pairs has updated.
+2022-04-20T04:51:01.053Z the pairs has updated.
+2022-04-20T04:52:01.074Z the pairs has updated.
+2022-04-20T04:53:01.075Z the pairs has updated.
+2022-04-20T04:54:01.075Z the pairs has updated.
+2022-04-20T04:55:01.032Z the pairs has updated.
+2022-04-20T04:56:01.025Z the pairs has updated.
+2022-04-20T04:57:01.074Z the pairs has updated.
+2022-04-20T04:58:01.033Z the pairs has updated.
+2022-04-20T04:59:01.033Z the pairs has updated.
+2022-04-20T05:00:01.075Z the pairs has updated.
+2022-04-20T05:01:01.041Z the pairs has updated.
+2022-04-20T05:02:01.076Z the pairs has updated.
+2022-04-20T05:03:01.061Z the pairs has updated.
+2022-04-20T05:04:01.074Z the pairs has updated.
+2022-04-20T05:05:01.049Z the pairs has updated.
+2022-04-20T05:06:01.034Z the pairs has updated.
+2022-04-20T05:07:01.036Z the pairs has updated.
+2022-04-20T05:08:01.034Z the pairs has updated.
+2022-04-20T05:09:01.034Z the pairs has updated.
+2022-04-20T05:10:01.050Z the pairs has updated.
+2022-04-20T05:11:01.035Z the pairs has updated.
+2022-04-20T05:12:01.034Z the pairs has updated.
+2022-04-20T05:13:01.041Z the pairs has updated.
+2022-04-20T05:14:01.074Z the pairs has updated.
+2022-04-20T05:15:01.033Z the pairs has updated.
+2022-04-20T05:16:01.034Z the pairs has updated.
+2022-04-20T05:17:01.033Z the pairs has updated.
+2022-04-20T05:18:01.074Z the pairs has updated.
+2022-04-20T05:19:01.075Z the pairs has updated.
+2022-04-20T05:20:01.040Z the pairs has updated.
+2022-04-20T05:21:01.075Z the pairs has updated.
+2022-04-20T05:22:01.075Z the pairs has updated.
+2022-04-20T05:23:01.064Z the pairs has updated.
+2022-04-20T05:24:01.025Z the pairs has updated.
+2022-04-20T05:25:01.033Z the pairs has updated.
+2022-04-20T05:26:01.074Z the pairs has updated.
+2022-04-20T05:27:01.040Z the pairs has updated.
+2022-04-20T05:28:01.075Z the pairs has updated.

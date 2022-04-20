@@ -9,17 +9,7 @@ export const UniSwap_v3 = new GraphQLClient('https://api.thegraph.com/subgraphs/
 
 type Subgraph1 = {
     id: string;
-    token0: {
-        id: string;
-        symbol: string;
-    };
-    token1: {
-        id: string;
-        symbol: string;
-    };
-    totalSupply: string;
-    reserveETH: string;
-    trackedReserveETH: string;
+    reserveUSD: number;
 };
 
 type Subgraph2 = {
@@ -39,36 +29,15 @@ type Subgraph2 = {
 
 type Subgraph3 = {
     id: string;
-    feeTier: string;
-    liquidity: string;
-    token0: {
-        symbol: string;
-        id: string;
-    };
-    token1: {
-        symbol: string;
-        id: string;
-    };
-    totalValueLockedUSD: string;
-    totalValueLockedETH: string;
+    liquidity: number;
 };
 
-export async function query1(client: GraphQLClient, first: number): Promise<Subgraph1[]> {
+async function query1(client: GraphQLClient, first: number, skip: number): Promise<Subgraph1[]> {
     let query = gql`
         {
-        pairs(first: ${first}, orderBy: reserveETH, orderDirection: desc) {
+        pairs(skip: ${skip},first: ${first},orderBy: reserveUSD, orderDirection: desc) {
         id
-        token0 {
-        id     
-        symbol
-        }
-        token1 {
-        id     
-        symbol
-        }
-        totalSupply
-        reserveETH
-        trackedReserveETH
+        reserveUSD
         }
         }
         `;
@@ -77,13 +46,14 @@ export async function query1(client: GraphQLClient, first: number): Promise<Subg
         pairs: Subgraph1[];
     }>(query);
     pairs = pairs.concat(poolsResult.pairs);
+    console.log("receive entries",pairs)
     return pairs;
 }
 
-export async function query2(client: GraphQLClient, first: number): Promise<Subgraph2[]> {
+async function query2(client: GraphQLClient, first: number): Promise<Subgraph2[]> {
     let query = gql`
         {
-        pairs(first: ${first}, orderBy: reserveBNB, orderDirection: desc) {
+        pairs(first: ${first},orderBy: reserveUSD, orderDirection: desc) {
         id
         token0 {
         id
@@ -104,26 +74,16 @@ export async function query2(client: GraphQLClient, first: number): Promise<Subg
         pairs: Subgraph2[];
     }>(query);
     pairs = pairs.concat(poolsResult.pairs);
+    console.log("receive entries",pairs)
     return pairs;
 }
 
-export async function query3(client: GraphQLClient, first: number): Promise<Subgraph3[]> {
+async function query3(client: GraphQLClient, first: number,skip :number): Promise<Subgraph3[]> {
     let query = gql`
         {
-            pools(first: ${first}, orderBy: liquidity, orderDirection: desc) {
+            pools(skip: ${skip}, first: ${first}, orderBy: liquidity, orderDirection: desc) {
               id
-              feeTier
               liquidity
-              token0 {
-                id
-                symbol
-              }
-              token1 {
-                id
-                symbol
-              }
-              totalValueLockedUSD
-              totalValueLockedETH
             }
           }
         `
@@ -132,5 +92,23 @@ export async function query3(client: GraphQLClient, first: number): Promise<Subg
         pools: Subgraph3[];
     }>(query);
     pairs = pairs.concat(poolsResult.pools);
+    console.log("receive entries",pairs)
     return pairs;
 }
+
+//query1(QuickSwap,10);
+//query1(SushiSwap,10);
+//query1(ApeSwap,10);
+//query1(UniSwap_v2,10);
+//query2(PancakeSwap,10);
+//query3(UniSwap_v3,10);
+
+
+query3(UniSwap_v3,1,0).then((arr)=>{
+    let all = 0;
+    for (var i=0;i<arr.length;i++){
+       all += Number(arr[i].liquidity);
+    }
+    console.log("all",all)
+});
+
