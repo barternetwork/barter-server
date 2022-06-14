@@ -15,6 +15,8 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
         sushiswap: String,
         uniswap_v2: String,
         uniswap_v3: String,
+        curve: String,
+        balancer: String
     }
 
     if (ok.path != '/favicon.ico') {
@@ -29,7 +31,7 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
                 let filter = {
                     name: { "$in": dex },
                 }
-                console.log("request:",filter)
+                console.log("request:", filter)
                 DB.findData(TableName.SimplePools, filter).then((ret: any) => {
                     let result = JSON.parse(ret)
                     for (let i = 0; i < dex.length; i++) {
@@ -54,6 +56,14 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
                                 case dexName.pancakeswap:
                                     console.log(i, result[i].name)
                                     pools.pancakeswap = result[i].result.pairs;
+                                    break;
+                                case dexName.curve:
+                                    console.log(i, result[i].name)
+                                    pools.curve = result[i].result;
+                                    break;
+                                case dexName.balancer:
+                                    console.log(i, result[i].name)
+                                    pools.balancer = result[i].result;
                                     break;
                             }
                         } catch (err) {
@@ -83,3 +93,11 @@ const server = createServer((request: IncomingMessage, response: ServerResponse)
 
 server.listen(port);
 console.log(`server is running ...`)
+
+process.on('unhandledRejection', (err) => {
+    console.log('unhandled exception', err);
+})
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ' + err);
+});

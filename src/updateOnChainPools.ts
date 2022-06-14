@@ -11,6 +11,8 @@ const scheduleTask = () => {
             onchainPools(dexName.sushiswap,ChainId.POLYGON)
             onchainPools(dexName.uniswap_v2,ChainId.MAINNET)
             onchainPools(dexName.uniswap_v3,ChainId.POLYGON)
+            onchainPools(dexName.balancer,ChainId.POLYGON)
+            onchainPools(dexName.curve,ChainId.POLYGON)
         }catch(err){
             console.log("fail to update OnChainPools ,error:",err)
         }
@@ -19,3 +21,11 @@ const scheduleTask = () => {
 }
 
 scheduleTask();
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ' + err);
+});
+
+process.on('unhandledRejection', (err) => {
+    console.log('unhandled exception', err);
+})

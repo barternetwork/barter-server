@@ -5,6 +5,7 @@ export enum TableName {
     DetailedPools = 'DetailedPools',
     SimplePools = 'SimplePools',
     OnChainPools = 'OnChainPools',
+    ApiPools = 'ApiPools',
 }
 
 export class BarterSwapDB {

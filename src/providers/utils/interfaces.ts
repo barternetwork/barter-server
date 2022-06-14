@@ -78,3 +78,44 @@ export type RawBNBV2SubgraphPool = {
   reserveBNB: string;
   trackedReserveBNB: string;
 };
+
+export type RawCurveSubgraphPool = {
+  address: string,
+  assetType: string,
+  baseApr: string,
+  basePool: string,
+  coinDecimals: [],
+  coinNames: [],
+  coins: [],
+  creationBlock: string,
+  creationDate: string,
+  creationTx: string,
+  cumulativeVolume: string,
+  cumulativeVolumeUSD: string,
+  id: string,
+  isV2: boolean,
+  lpToken: string,
+  metapool: boolean,
+  name: string,
+  poolType: string,
+  symbol: string,
+  virtualPrice: string
+};
+
+export type RawBalancerSubgraphPool = {
+  address: string;
+  id: string;
+  name: string;
+  poolType: string;
+  swapEnabled: string;
+  swapFee: string;
+  swapsCount: string;
+  symbol: string;
+  tokensList: string;
+  totalLiquidity: string;
+  totalShares: string;
+  totalSwapFee: string;
+  totalSwapVolume: string;
+  totalWeight: string;
+  tx: string;
+};

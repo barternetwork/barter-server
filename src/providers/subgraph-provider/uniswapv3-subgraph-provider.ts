@@ -27,7 +27,7 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
         await retry(
             async () => {
                 await this.client.request<{
-                    pairs: RawETHV3SubgraphPool[];
+                    pools: RawETHV3SubgraphPool[];
                 }>(queryV3PoolGQL(LiquidityMoreThan90Percent.UniSwap_V3)).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
@@ -53,7 +53,7 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
         await retry(
             async () => {
                 await this.client.request<{
-                    pairs: RawETHV3SubgraphPool[];
+                    pools: RawETHV3SubgraphPool[];
                 }>(quickQueryV3PoolGQL(LiquidityMoreThan90Percent.UniSwap_V3)).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
