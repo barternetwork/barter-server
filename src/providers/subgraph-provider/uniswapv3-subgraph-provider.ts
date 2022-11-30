@@ -1,12 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
-import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_UNISWAP_V3 } from '../utils/url'
 import { ISubgraphProvider,RawETHV3SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV3PoolGQL,quickQueryV3PoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
-
+const retry = require('async-retry');
 export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
     private DB = new BarterSwapDB();
@@ -35,7 +34,7 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.uniswap_v3},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})  
+                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.uniswap_v3,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})  
                 });
             },      
             {
@@ -61,7 +60,8 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.uniswap_v3},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})  
+                    //console.log(res)
+                    this.DB.deleteData(TableName.SimplePools,{name: dexName.uniswap_v3,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})  
                 });
             },      
             {
@@ -74,3 +74,5 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
         );
     }
 }
+let v = new UniSwapV3SubgraphProvider(ChainId.POLYGON)
+v.quickGetPools()

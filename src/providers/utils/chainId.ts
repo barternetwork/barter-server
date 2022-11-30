@@ -7,6 +7,7 @@ export enum ChainId {
   KOVAN = 42,
   POLYGON = 137,
   BSC = 56,
+  MAP = 22776
 }
 
 export const V2_SUPPORTED = [

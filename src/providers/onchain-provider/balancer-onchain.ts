@@ -33,6 +33,6 @@ export async function queryBalancerSwapOnChain(name: dexName,chainId: ChainId) {
         chainId: chainId,
         result: data,
     }
-    await DB.deleteData(TableName.OnChainPools, { name: dexName }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
+    await DB.deleteData(TableName.OnChainPools, { name: dexName,chainId: chainId }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
 }
 

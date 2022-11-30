@@ -1,12 +1,12 @@
 import { GraphQLClient } from 'graphql-request';
-import { default as retry } from 'async-retry';
+//import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_BALANCER } from '../utils/url'
 import { ISubgraphProvider,RawBalancerSubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryBalancerPoolGQL,quickQueryBalancerPoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
-
+const retry = require('async-retry');
 export class BalancerSubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
     private DB = new BarterSwapDB();
@@ -40,7 +40,7 @@ export class BalancerSubgraphProvider implements ISubgraphProvider{
                     }
                     //console.log("res",res)
                     //console.log("len",res.pools.length,data.result.length)
-                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.balancer},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                     
+                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.balancer,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                     
                 });
             },      
             {
@@ -179,9 +179,8 @@ export class BalancerSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : array,
                     }
-                    //console.log("array",array)
-                    //console.log("len",res.pools.length,array.length)
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.balancer},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                     
+                    //console.log("array",array,"len",array.length)
+                    this.DB.deleteData(TableName.SimplePools,{name: dexName.balancer,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                     
                 });
             },      
             {
@@ -194,5 +193,3 @@ export class BalancerSubgraphProvider implements ISubgraphProvider{
         );
     }
 }
-let test = new BalancerSubgraphProvider(ChainId.POLYGON)
-test.quickGetPools()

@@ -7,7 +7,12 @@ import { ChainId } from '../utils/chainId'
 
 export async function queryCurveOnChain(name: dexName,chainId: ChainId) {
     // 2. Infura
-    curve.init("Infura", { network: 137, apiKey: "8cce6b470ad44fb5a3621aa34243647f" }, { chainId: chainId });
+    if (chainId == ChainId.MAINNET){
+        curve.init("Infura", { network: 1, apiKey: "8cce6b470ad44fb5a3621aa34243647f" }, { chainId: chainId });
+    }else{
+        curve.init("Infura", { network: 137, apiKey: "8cce6b470ad44fb5a3621aa34243647f" }, { chainId: chainId });
+    }
+
     
     // Fetch factory pools
     await curve.fetchFactoryPools();
@@ -83,6 +88,6 @@ export async function queryCurveOnChain(name: dexName,chainId: ChainId) {
         result: newPools,
     }
     const DB = new BarterSwapDB()
-    await DB.deleteData(TableName.OnChainPools, { name: dexName }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
+    await DB.deleteData(TableName.OnChainPools, { name: dexName,chainId: chainId }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
 }
 

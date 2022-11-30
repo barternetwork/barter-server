@@ -8,7 +8,7 @@ import { queryUniSwapV2OnChain } from './uniswapv2-onchain'
 import { queryUniSwapV3OnChain } from './uniswapv3-onchain'
 import { queryCurveOnChain } from './curvefi-onchain'
 import { queryBalancerSwapOnChain } from './balancer-onchain'
-import { default as retry } from 'async-retry';
+const retry = require('async-retry');
 
 
 export async function onchainPools(dexName: swapName, chainId: ChainId) {
@@ -114,5 +114,5 @@ export async function onchainPools(dexName: swapName, chainId: ChainId) {
         chainId: chainId,
         result: data,
     }
-    await DB.deleteData(TableName.OnChainPools, { name: dexName }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
+    await DB.deleteData(TableName.OnChainPools, { name: dexName,chainId: chainId }, true).then(()=>{DB.insertData(TableName.OnChainPools, storageData)}).catch(()=>{console.log("fail to delete data,table name",TableName.OnChainPools)})           
 }

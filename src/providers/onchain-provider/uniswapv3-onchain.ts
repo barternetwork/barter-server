@@ -81,3 +81,5 @@ export async function queryUniSwapV3OnChain(chainId: ChainId, poolAddress: strin
 
   return JSON.stringify(result)
 }
+
+queryUniSwapV3OnChain(ChainId.MAINNET,'0x0001fcbba8eb491c3ccfeddc5a5caba1a98c4c28','0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2','0xbef81556ef066ec840a540595c8d12f516b6378f',10)

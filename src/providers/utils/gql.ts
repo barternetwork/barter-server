@@ -6,9 +6,10 @@ export enum LiquidityMoreThan90Percent {
   PancakeSwap = 10,
   ApeSwap = 100,
   UniSwap_V2 = 550,
-  UniSwap_V3 = 10,
+  UniSwap_V3 = 12,
   Curve = 44,
-  Balancer = 15
+  Balancer = 15,
+  hiveswap = 10
 }
 
 // gql needed to query graph data
@@ -45,7 +46,7 @@ export function queryV3PoolGQL(first:number) {
 
   return  gql`
         {
-            pools(first: ${first}, orderBy: liquidity, orderDirection: desc) {
+            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc) {
               id
               feeTier
               liquidity
@@ -80,6 +81,8 @@ export function quickQueryV2PoolGQL(first:number, tokenType:string) {
         id
         symbol
       }
+      totalSupply
+      trackedReserve${tokenType}
     }
 }
 `;
@@ -90,7 +93,7 @@ export function quickQueryV3PoolGQL(first:number) {
 
   return  gql`
         {
-            pools(first: ${first}, orderBy: liquidity, orderDirection: desc) {
+            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc) {
               id
               token0 {
                 id
@@ -100,6 +103,8 @@ export function quickQueryV3PoolGQL(first:number) {
                 id
                 symbol
               }
+              totalValueLockedUSD
+              totalValueLockedETH
             }
           }
 `;

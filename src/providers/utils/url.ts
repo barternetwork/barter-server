@@ -38,18 +38,24 @@ export const SUBGRAPH_URL_BY_CURVE: { [chainId in ChainId]?: string } = {
     'https://api.thegraph.com/subgraphs/name/convex-community/volume-matic',
 };
 
-export const API_URL_BY_CURVE: { [chainId in ChainId]?: string } = {
+export const API_URL_BY_CURVE: { [chainId in ChainId]?: string[] } = {
   [ChainId.MAINNET]:
-    'https://api.curve.fi/api/getPools/ethereum/main',
+    ['https://api.curve.fi/api/getPools/ethereum/main','https://api.curve.fi/api/getPools/ethereum/crypto',
+    'https://api.curve.fi/api/getPools/ethereum/factory','https://api.curve.fi/api/getPools/ethereum/factory-crypto'],
   [ChainId.POLYGON]:
-    'https://api.curve.fi/api/getPools/polygon/main',
+    ['https://api.curve.fi/api/getPools/polygon/main','https://api.curve.fi/api/getPools/polygon/crypto','https://api.curve.fi/api/getPools/polygon/factory'],
 };
 
 export const SUBGRAPH_URL_BY_BALANCER: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]:
-    'https://thegraph.com/legacy-explorer/subgraph/balancer-labs/balancer-v2',
+    'https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-v2',
   [ChainId.POLYGON]:
     'https://api.thegraph.com/subgraphs/name/balancer-labs/balancer-polygon-v2',
+};
+
+export const SUBGRAPH_URL_BY_HIVESWAP: { [chainId in ChainId]?: string } = {
+  [ChainId.MAP]:
+    'https://makalu-graph.maplabs.io/subgraphs/name/map/hiveswap2',
 };
 
 export const CHAIN_RPC: { [chainId in ChainId]?: string } = {
@@ -59,6 +65,8 @@ export const CHAIN_RPC: { [chainId in ChainId]?: string } = {
     'https://polygon-mainnet.infura.io/v3/8cce6b470ad44fb5a3621aa34243647f',
   [ChainId.BSC]:
     'https://bsc-dataseed.binance.org/',
+  [ChainId.MAP]:
+    'https://poc3-rpc.maplabs.io'
 }
 
 export const ETH_PRICE_API = 'https://api.curve.fi/api/getETHprice'

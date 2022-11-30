@@ -1,12 +1,12 @@
 import { GraphQLClient } from 'graphql-request';
-import { default as retry } from 'async-retry';
+//import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_CURVE, API_URL_BY_CURVE } from '../utils/url'
-import { ISubgraphProvider, RawCurveSubgraphPool } from '../utils/interfaces'
+import { ISubgraphProvider, RawCurveSubgraphPool, RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryCurvePoolGQL, quickQueryCurvePoolGQL } from '../utils/gql'
 import { BarterSwapDB, TableName } from '../../mongodb/client'
-
+const retry = require('async-retry');
 const axios = require('axios');
 
 export class CurveSubgraphProvider implements ISubgraphProvider {
@@ -37,7 +37,7 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
                         chainId: this.chainId,
                         result: res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools, { name: dexName.curve }, true).then(() => { this.DB.insertData(TableName.DetailedPools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.DetailedPools) })
+                    this.DB.deleteData(TableName.DetailedPools, { name: dexName.curve, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.DetailedPools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.DetailedPools) })
                 });
             },
             {
@@ -63,7 +63,7 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
                         chainId: this.chainId,
                         result: res,
                     }
-                    this.DB.deleteData(TableName.SimplePools, { name: dexName.curve }, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
+                    this.DB.deleteData(TableName.SimplePools, { name: dexName.curve, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
                 });
             },
             {
@@ -77,125 +77,85 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
     }
 
     async getPoolsByApi() {
-        await retry(
-            async () => {
-                axios.get(API_URL_BY_CURVE[this.chainId])
-                    .then((res: any) => {
-                        //console.log(res.data.data.poolData)
-                        let tmp = JSON.stringify(res.data.data.poolData)
-                        const ok = JSON.parse(tmp)
-                        let array = []
-                        let index = 0
-                        for (let key in ok) {
-                            if (ok[key].coins.length == 2) {
-                                ok[key].coinsAddresses.length = 2
-                                ok[key].decimals.length = 2
-                                ok[key].underlyingDecimals.length = 2
-                                array[index] = ok[key];
-                                index++;
-                            }else if (ok[key].coins.length == 3){
-                                let copyCoinsAddresses = ok[key].coinsAddresses
-                                let copyDecimals = ok[key].decimals
-                                let copyUnderlyingDecimals = ok[key].underlyingDecimals
-                                let copyCoins = ok[key].coins
+        let array = []
+        let index = 0
+        let start = 0
+        for (let i = 0; i < API_URL_BY_CURVE[this.chainId].length; i++) {
+            await retry(
+                async () => {
+                    axios.get(API_URL_BY_CURVE[this.chainId][i])
+                        .then((res: any) => {
+                            //console.log(i,res.data.data.poolData)
+                            let tmp = JSON.stringify(res.data.data.poolData)
+                            const ok = JSON.parse(tmp)
+                            let newFormat = { id: null, token0: { id: null, decimals: null }, token1: { id: null, decimals: null }, totalSupply: null, usdTotal: null }
+                            for (let key in ok) {
+                                if (ok[key].coins.length == 2) {
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++;
+                                } else if (ok[key].coins.length == 3) {
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy1 = ok[key]
-                                copy1.coinsAddresses = [copyCoinsAddresses[0],copyCoinsAddresses[1]]
-                                copy1.decimals = [copyDecimals[0],copyDecimals[1]]
-                                copy1.underlyingDecimals = [copyUnderlyingDecimals[0],copyUnderlyingDecimals[1]]
-                                copy1.coins = [copyCoins[0],copyCoins[1]]
-                                array[index] = copy1 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[2].address, decimals: ok[key].coins[2].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy2 = ok[key]
-                                copy2.coinsAddresses = [copyCoinsAddresses[0],copyCoinsAddresses[2]]
-                                copy2.decimals = [copyDecimals[0],copyDecimals[2]]
-                                copy2.underlyingDecimals = [copyUnderlyingDecimals[0],copyUnderlyingDecimals[2]]
-                                copy2.coins = [copyCoins[0],copyCoins[2]]
-                                array[index] = copy2 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[2].address, decimals: ok[key].coins[2].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
+                                } else if (ok[key].coins.length == 4) {
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy3 = ok[key]
-                                copy3.coinsAddresses = [copyCoinsAddresses[1],copyCoinsAddresses[2]]
-                                copy3.decimals = [copyDecimals[1],copyDecimals[2]]
-                                copy3.underlyingDecimals = [copyUnderlyingDecimals[1],copyUnderlyingDecimals[2]]
-                                copy3.coins = [copyCoins[1],copyCoins[2]]
-                                array[index] = copy3 
-                                index++
-                            }else if (ok[key].coins.length == 4){
-                                let copyCoinsAddresses = ok[key].coinsAddresses
-                                let copyDecimals = ok[key].decimals
-                                let copyUnderlyingDecimals = ok[key].underlyingDecimals
-                                let copyCoins = ok[key].coins
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[2].address, decimals: ok[key].coins[2].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy1 = ok[key]
-                                copy1.coinsAddresses = [copyCoinsAddresses[0],copyCoinsAddresses[1]]
-                                copy1.decimals = [copyDecimals[0],copyDecimals[1]]
-                                copy1.underlyingDecimals = [copyUnderlyingDecimals[0],copyUnderlyingDecimals[1]]
-                                copy1.coins = [copyCoins[0],copyCoins[1]]
-                                array[index] = copy1 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[2].address, decimals: ok[key].coins[2].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy2 = ok[key]
-                                copy2.coinsAddresses = [copyCoinsAddresses[0],copyCoinsAddresses[2]]
-                                copy2.decimals = [copyDecimals[0],copyDecimals[2]]
-                                copy2.underlyingDecimals = [copyUnderlyingDecimals[0],copyUnderlyingDecimals[2]]
-                                copy2.coins = [copyCoins[0],copyCoins[2]]
-                                array[index] = copy2 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[0].address, decimals: ok[key].coins[0].decimals }, token1: { id: ok[key].coins[3].address, decimals: ok[key].coins[3].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy3 = ok[key]
-                                copy3.coinsAddresses = [copyCoinsAddresses[1],copyCoinsAddresses[2]]
-                                copy3.decimals = [copyDecimals[1],copyDecimals[2]]
-                                copy3.underlyingDecimals = [copyUnderlyingDecimals[1],copyUnderlyingDecimals[2]]
-                                copy3.coins = [copyCoins[1],copyCoins[2]]
-                                array[index] = copy3 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[3].address, decimals: ok[key].coins[3].decimals }, token1: { id: ok[key].coins[2].address, decimals: ok[key].coins[2].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
 
-                                let copy4 = ok[key]
-                                copy4.coinsAddresses = [copyCoinsAddresses[0],copyCoinsAddresses[3]]
-                                copy4.decimals = [copyDecimals[0],copyDecimals[3]]
-                                copy4.underlyingDecimals = [copyUnderlyingDecimals[0],copyUnderlyingDecimals[3]]
-                                copy4.coins = [copyCoins[0],copyCoins[3]]
-                                array[index] = copy4 
-                                index++
-
-                                let copy5 = ok[key]
-                                copy5.coinsAddresses = [copyCoinsAddresses[1],copyCoinsAddresses[3]]
-                                copy5.decimals = [copyDecimals[1],copyDecimals[3]]
-                                copy5.underlyingDecimals = [copyUnderlyingDecimals[1],copyUnderlyingDecimals[3]]
-                                copy5.coins = [copyCoins[1],copyCoins[3]]
-                                array[index] = copy5 
-                                index++
-
-                                let copy6 = ok[key]
-                                copy6.coinsAddresses = [copyCoinsAddresses[2],copyCoinsAddresses[3]]
-                                copy6.decimals = [copyDecimals[2],copyDecimals[3]]
-                                copy6.underlyingDecimals = [copyUnderlyingDecimals[2],copyUnderlyingDecimals[3]]
-                                copy6.coins = [copyCoins[2],copyCoins[3]]
-                                array[index] = copy6 
-                                index++
+                                    newFormat = { id: ok[key].address, token0: { id: ok[key].coins[3].address, decimals: ok[key].coins[3].decimals }, token1: { id: ok[key].coins[1].address, decimals: ok[key].coins[1].decimals }, totalSupply: ok[key].totalSupply, usdTotal: ok[key].usdTotal }
+                                    array[index] = newFormat
+                                    index++
+                                } else if(ok[key].name == ''|| ok[key].name == ''){
+                                    console.log("there is a pool that has 5 token.")
+                                }
                             }
-                        }
-                        let data = {
-                            updateTime: Date.parse(new Date().toString()),
-                            name: dexName.curve,
-                            chainId: this.chainId,
-                            result: array,
-                        }
-                        //console.log(array, data.result.length)
-                        this.DB.deleteData(TableName.SimplePools, { name: dexName.curve }, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
-                    })
-                    .catch((err: any) => { console.log("cannot get data from api,err:", err) })
-            },
-            {
-                retries: this.retries,
-                maxTimeout: this.maxTimeout,
-                onRetry: (err, retry) => {
-                    console.log("error message:", err, ",retry times:", retry)
+                            start++
+                            if (start == API_URL_BY_CURVE[this.chainId].length){
+                                let data = {
+                                    updateTime: Date.parse(new Date().toString()),
+                                    name: dexName.curve,
+                                    chainId: this.chainId,
+                                    result: array,
+                                }
+                                //console.log(this.chainId,API_URL_BY_CURVE[this.chainId],API_URL_BY_CURVE[this.chainId].length, data)
+                                this.DB.deleteData(TableName.SimplePools, {name: dexName.curve,chainId: this.chainId}, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })          
+                            }
+                        }).catch((err: any) => { console.log("cannot get data from api,err:", err) })
                 },
-            }
-        );
+                {
+                    retries: this.retries,
+                    maxTimeout: this.maxTimeout,
+                    onRetry: (err, retry) => {
+                        console.log("error message:", err, ",retry times:", retry)
+                    },
+                }
+            );
+        }
     }
 
 }

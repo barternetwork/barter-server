@@ -1,12 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
-import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_PANCAKESWAP } from '../utils/url'
 import { ISubgraphProvider,RawBNBV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
-
+const retry = require('async-retry');
 
 export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
@@ -36,7 +35,7 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.pancakeswap},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                    
+                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.pancakeswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                    
                 });
             },      
             {
@@ -62,7 +61,8 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.pancakeswap},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                  
+                    console.log(data.result)
+                    this.DB.deleteData(TableName.SimplePools,{name: dexName.pancakeswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                  
                 });
             },      
             {
@@ -76,3 +76,5 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
     }
 
 }
+const getPancakeSwapData_Test = new PancakeSwapSubgraphProvider(ChainId.BSC)
+getPancakeSwapData_Test.quickGetPools()

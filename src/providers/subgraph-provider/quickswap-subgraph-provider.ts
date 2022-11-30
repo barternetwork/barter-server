@@ -1,12 +1,11 @@
 import { GraphQLClient } from 'graphql-request';
-import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_QUICKSWAP } from '../utils/url'
 import { ISubgraphProvider,RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
-
+const retry = require('async-retry');
 export class QuickSwapSubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
     private DB = new BarterSwapDB();
@@ -61,7 +60,8 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.quickswap},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                     
+                    console.log(data.result)
+                    this.DB.deleteData(TableName.SimplePools,{name: dexName.quickswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                     
                 });
             },      
             {
@@ -74,3 +74,5 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
         );
     }
 }
+const getQuickSwapData_Test = new QuickSwapSubgraphProvider(ChainId.POLYGON)
+getQuickSwapData_Test.quickGetPools()
