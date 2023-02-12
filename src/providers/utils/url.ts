@@ -10,16 +10,22 @@ export const SUBGRAPH_URL_BY_SUSHISWAP: { [chainId in ChainId]?: string } = {
 export const SUBGRAPH_URL_BY_PANCAKESWAP: { [chainId in ChainId]?: string } = {
   [ChainId.BSC]:
     'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2',
+  [ChainId.BSC_TEST]:
+      'https://api.thegraph.com/subgraphs/name/pandarr007/pancakeswap',
 };
 
 export const SUBGRAPH_URL_BY_QUICKSWAP: { [chainId in ChainId]?: string } = {
   [ChainId.POLYGON]:
     'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06',
+  [ChainId.POLYGON_MUMBAI]:
+      'https://api.thegraph.com/subgraphs/name/pandarr007/quickswap-v2-mumbai',
 };
 
 export const SUBGRAPH_URL_BY_UNISWAP_V2: { [chainId in ChainId]?: string } = {
   [ChainId.MAINNET]:
     'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
+  [ChainId.GÖRLI]:
+      'https://api.thegraph.com/subgraphs/name/pandarr007/uniswap-v2-goerli',
 };
 
 export const SUBGRAPH_URL_BY_UNISWAP_V3: { [chainId in ChainId]?: string } = {

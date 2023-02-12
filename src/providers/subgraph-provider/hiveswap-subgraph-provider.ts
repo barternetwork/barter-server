@@ -75,5 +75,3 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
         );
     }
 }
-const getDataByHiveSwap_Test = new HiveSwapSubgraphProvider(ChainId.MAP)
-getDataByHiveSwap_Test.quickGetPools()

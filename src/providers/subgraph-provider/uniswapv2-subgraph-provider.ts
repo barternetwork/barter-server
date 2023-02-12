@@ -6,10 +6,12 @@ import { SUBGRAPH_URL_BY_UNISWAP_V2 } from '../utils/url'
 import { ISubgraphProvider,RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
+import {getSimplePoolRedisKey} from "../utils/misc";
+import {RedisClient} from "../../redis/client";
 const retry = require('async-retry');
 export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
-    private DB = new BarterSwapDB();
+    private redis: RedisClient;
     
     constructor(    
         private chainId: ChainId,
@@ -21,6 +23,8 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
           }
         this.client = new GraphQLClient(subgraphUrl);
+        this.redis = new RedisClient();
+        this.redis.connect().then(r => {console.log("redis is connected")});
     }   
 
     async getPools(){
@@ -35,7 +39,7 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.uniswap_v2,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                      
+                    // this.DB.deleteData(TableName.DetailedPools,{name: dexName.uniswap_v2,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})
                 });
             },      
             {
@@ -52,6 +56,7 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
     async quickGetPools(){
         await retry(
             async () => {
+                let start = Date.now();
                 await this.client.request<{
                     pairs: RawETHV2SubgraphPool[];
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.UniSwap_V2,'ETH')).then((res)=>{
@@ -61,7 +66,11 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.uniswap_v2,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                     
+                    console.log("query uniswap v2 pools costs:", Date.now() - start);
+                    console.log(data.result);
+                    let key = getSimplePoolRedisKey(this.chainId, dexName.uniswap_v2)
+                    this.redis.set(key, JSON.stringify(data))
+                    // this.DB.deleteData(TableName.SimplePools,{name: dexName.uniswap_v2,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})
                 });
             },      
             {

@@ -5,13 +5,15 @@ import { SUBGRAPH_URL_BY_PANCAKESWAP } from '../utils/url'
 import { ISubgraphProvider,RawBNBV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
+import {RedisClient} from "../../redis/client";
+import {getSimplePoolRedisKey} from "../utils/misc";
 const retry = require('async-retry');
 
 export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
     private client: GraphQLClient;
-    private DB = new BarterSwapDB();
+    private redis: RedisClient;
 
-    constructor(    
+    constructor(
         private chainId: ChainId,
         private retries = 2,     //The maximum amount of times to retry the operation.
         private maxTimeout = 5000,  //The maximum number of milliseconds between two retries.
@@ -21,7 +23,9 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
           }
         this.client = new GraphQLClient(subgraphUrl);
-    }   
+        this.redis = new RedisClient();
+        this.redis.connect();
+    }
 
     async  getPools(){
         await retry(
@@ -35,7 +39,7 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools,{name: dexName.pancakeswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})                    
+                    // this.DB.deleteData(TableName.DetailedPools,{name: dexName.pancakeswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.DetailedPools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.DetailedPools)})
                 });
             },      
             {
@@ -52,6 +56,7 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
     async  quickGetPools(){
         await retry(
             async () => {
+                let start = Date.now();
                 await this.client.request<{
                     pairs: RawBNBV2SubgraphPool[];
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.PancakeSwap,'BNB')).then((res)=>{
@@ -61,8 +66,10 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
+                    console.log("query pancake pools costs:", Date.now() - start);
                     console.log(data.result)
-                    this.DB.deleteData(TableName.SimplePools,{name: dexName.pancakeswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})                  
+                    let key = getSimplePoolRedisKey(this.chainId, dexName.pancakeswap)
+                    this.redis.set(key, JSON.stringify(data))
                 });
             },      
             {
@@ -76,5 +83,3 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
     }
 
 }
-const getPancakeSwapData_Test = new PancakeSwapSubgraphProvider(ChainId.BSC)
-getPancakeSwapData_Test.quickGetPools()

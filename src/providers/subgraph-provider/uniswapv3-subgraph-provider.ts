@@ -74,5 +74,3 @@ export class UniSwapV3SubgraphProvider implements ISubgraphProvider{
         );
     }
 }
-let v = new UniSwapV3SubgraphProvider(ChainId.POLYGON)
-v.quickGetPools()

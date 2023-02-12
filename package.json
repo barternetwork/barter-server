@@ -42,12 +42,14 @@
     "graphql-request": "^4.2.0",
     "mongodb": "^4.5.0",
     "node-schedule": "^2.1.0",
+    "redis": "^4.6.4",
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
     "retry": "^0.13.1",
     "rxjs": "^7.5.5",
     "sushiswap-sdk": "^1.0.0",
     "ts-node": "^10.7.0",
+    "ts-node-dev": "^2.0.0",
     "url": "^0.11.0"
   },
   "devDependencies": {

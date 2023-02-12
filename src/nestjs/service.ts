@@ -1,8 +1,12 @@
 import { BarterSwapDB, TableName } from '../mongodb/client'
 import { Injectable } from '@nestjs/common';
 import { dexName } from '../providers/utils/params';
+import {RedisClient} from "../redis/client";
+import {getSimplePoolRedisKey} from "../providers/utils/misc";
 
-const DB = new BarterSwapDB();
+const redis = new RedisClient();
+redis.connect()
+
 @Injectable()
 export class AppService {
 
@@ -22,56 +26,55 @@ export class AppService {
       name: { "$in": dex },
       chainId: Number(chainId),
     }
-    let returnData:string;
 
-    await DB.findData(TableName.SimplePools, filter).then((ret: any) => {
-      let result = JSON.parse(ret)
-      for (let i = 0; i < dex.length; i++) {
-        try {
-          switch (result[i].name) {
-            case dexName.uniswap_v3:
-              pools.updateTime = result[i].updateTime
-              pools.uniswap_v3 = result[i].result.pools
-              break;
-            case dexName.uniswap_v2:
-              pools.updateTime = result[i].updateTime
-              pools.uniswap_v2 = result[i].result.pairs
-              break;
-            case dexName.sushiswap:
-              pools.updateTime = result[i].updateTime
-              pools.sushiswap = result[i].result.pairs
-              break;
-            case dexName.quickswap:
-              pools.updateTime = result[i].updateTime
-              pools.quickswap = result[i].result.pairs
-              break;
-            case dexName.pancakeswap:
-              pools.updateTime = result[i].updateTime
-              pools.pancakeswap = result[i].result.pairs
-              break;
-            case dexName.curve:
-              pools.updateTime = result[i].updateTime
-              pools.curve = result[i].result
-              break;
-            case dexName.balancer:
-              pools.updateTime = result[i].updateTime
-              pools.balancer = result[i].result
-              break;
-            case dexName.hiveswap:
-              pools.updateTime = result[i].updateTime
-              pools.hiveswap = result[i].result;
-              break;      
-          }
-        } catch (err) {
-          console.log("error by returning db data,", err)
-        }
+    for (let i = 0; i < dex.length; i++) {
+      let key = getSimplePoolRedisKey(chainId, dex[i])
+      let ret = await redis.get(key);
+      if (ret == null) {
+        continue
       }
-      returnData = JSON.stringify(pools);
-    }).catch((err) => {
-      console.log('fail to fetch data, err' + err)
-      returnData = 'database error'
-    })
+      let result = JSON.parse(ret);
 
-    return returnData;
+      try {
+        switch (result.name) {
+          case dexName.uniswap_v3:
+            pools.updateTime = result.updateTime
+            pools.uniswap_v3 = result.result.pools
+            break;
+          case dexName.uniswap_v2:
+            pools.updateTime = result.updateTime
+            pools.uniswap_v2 = result.result.pairs
+            break;
+          case dexName.sushiswap:
+            pools.updateTime = result.updateTime
+            pools.sushiswap = result.result.pairs
+            break;
+          case dexName.quickswap:
+            pools.updateTime = result.updateTime
+            pools.quickswap = result.result.pairs
+            break;
+          case dexName.pancakeswap:
+            pools.updateTime = result.updateTime
+            pools.pancakeswap = result.result.pairs
+            break;
+          case dexName.curve:
+            pools.updateTime = result.updateTime
+            pools.curve = result.result
+            break;
+          case dexName.balancer:
+            pools.updateTime = result.updateTime
+            pools.balancer = result.result
+            break;
+          case dexName.hiveswap:
+            pools.updateTime = result.updateTime
+            pools.hiveswap = result.result;
+            break;
+        }
+      } catch (err) {
+        console.log("error by returning redis data,", err)
+      }
+    }
+
+    return JSON.stringify(pools);
   }
 }
