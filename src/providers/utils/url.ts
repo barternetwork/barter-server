@@ -9,7 +9,7 @@ export const SUBGRAPH_URL_BY_SUSHISWAP: { [chainId in ChainId]?: string } = {
 
 export const SUBGRAPH_URL_BY_PANCAKESWAP: { [chainId in ChainId]?: string } = {
   [ChainId.BSC]:
-    'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2',
+    'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-cake-pairs',
   [ChainId.BSC_TEST]:
       'https://api.thegraph.com/subgraphs/name/pandarr007/pancakeswap',
 };
