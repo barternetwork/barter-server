@@ -3,7 +3,7 @@ import { ChainId } from '../utils/chainId'
 import { dexName } from '../utils/params'
 import { SUBGRAPH_URL_BY_PANCAKESWAP } from '../utils/url'
 import { ISubgraphProvider,RawBNBV2SubgraphPool } from '../utils/interfaces'
-import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
+import {LiquidityMoreThan90Percent, pancakeQuickQueryV2PoolGQL, queryV2PoolGQL, quickQueryV2PoolGQL} from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
 import {RedisClient} from "../../redis/client";
 import {getSimplePoolRedisKey} from "../utils/misc";
@@ -59,7 +59,7 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                 let start = Date.now();
                 await this.client.request<{
                     pairs: RawBNBV2SubgraphPool[];
-                }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.PancakeSwap,'BNB')).then((res)=>{
+                }>(pancakeQuickQueryV2PoolGQL(LiquidityMoreThan90Percent.PancakeSwap,'BNB')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
                         name: dexName.pancakeswap,

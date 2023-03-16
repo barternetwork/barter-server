@@ -3,7 +3,7 @@ import { gql } from 'graphql-request';
 export enum LiquidityMoreThan90Percent {
   QuickSwap = 140,
   SushiSwap = 40,
-  PancakeSwap = 10,
+  PancakeSwap = 50,
   ApeSwap = 100,
   UniSwap_V2 = 550,
   UniSwap_V3 = 12,
@@ -87,6 +87,28 @@ export function quickQueryV2PoolGQL(first:number, tokenType:string) {
 }
 `;
 
+}
+
+export function pancakeQuickQueryV2PoolGQL(first:number, tokenType:string) {
+
+  return gql`
+{
+    pairs(first: ${first}, orderBy: reserve${tokenType}, orderDirection: desc) {
+      id
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      totalSupply
+      reserve${tokenType}
+      trackedReserve${tokenType}
+    }
+}
+`;
 }
 
 export function quickQueryV3PoolGQL(first:number) {
