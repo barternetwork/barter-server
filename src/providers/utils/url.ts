@@ -62,6 +62,8 @@ export const SUBGRAPH_URL_BY_BALANCER: { [chainId in ChainId]?: string } = {
 export const SUBGRAPH_URL_BY_HIVESWAP: { [chainId in ChainId]?: string } = {
   [ChainId.MAP]:
     'https://makalu-graph.maplabs.io/subgraphs/name/map/hiveswap2',
+  [ChainId.MAP_TEST]:
+      'http://8.222.255.78:8000/subgraphs/name/testnet/hiveswap2',
 };
 
 export const CHAIN_RPC: { [chainId in ChainId]?: string } = {

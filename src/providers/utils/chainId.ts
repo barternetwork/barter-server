@@ -1,4 +1,4 @@
-const test = false;
+const test = true;
 
 export enum ChainId {
     MAINNET = 1,

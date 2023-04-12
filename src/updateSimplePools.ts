@@ -12,9 +12,8 @@ import {RedisClient} from "./redis/client";
 const schedule = require('node-schedule');
 
 const PancakeSwapSubgraph_BSC = new PancakeSwapSubgraphProvider(NETWORK_BSC)
-//
-// const HiveSwapSubgraph_MAP = new HiveSwapSubgraphProvider(NETWORK_MAP)
-//
+const HiveSwapSubgraph_MAP = new HiveSwapSubgraphProvider(NETWORK_MAP)
+
 // const SushiSwapSubgraph_ETH = new SushiSwapSubgraphProvider(NETWORK_ETH)
 const UniSwapV2Subgraph_ETH = new UniSwapV2SubgraphProvider(NETWORK_ETH)
 // const UniSwapV3Subgraph_ETH = new UniSwapV3SubgraphProvider(NETWORK_ETH)
@@ -32,7 +31,7 @@ const scheduleTask = () => {
         try{
             PancakeSwapSubgraph_BSC.quickGetPools()
             //
-            // HiveSwapSubgraph_MAP.quickGetPools()
+            HiveSwapSubgraph_MAP.quickGetPools()
             //
             // SushiSwapSubgraph_ETH.quickGetPools()
             UniSwapV2Subgraph_ETH.quickGetPools()

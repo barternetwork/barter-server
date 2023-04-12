@@ -55,6 +55,7 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
     async quickGetPools(){
         await retry(
             async () => {
+                let start = Date.now();
                 await this.client.request<{
                     pairs: RawETHV2SubgraphPool[];
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.QuickSwap,'ETH')).then((res)=>{
@@ -64,6 +65,7 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res,
                     }
+                    console.log("query quick pools costs:", Date.now() - start);
                     console.log(data.result)
                     let key = getSimplePoolRedisKey(this.chainId, dexName.quickswap)
                     this.redis.set(key, JSON.stringify(data))
