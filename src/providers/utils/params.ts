@@ -19,13 +19,26 @@ export async function ethPrice():Promise<number>{
     })
 }
 
-export enum dexName {
-    pancakeswap = 'pancakeswap',
-    quickswap = 'quickswap',
-    sushiswap = 'sushiswap',
-    uniswap_v2 = 'uniswap_v2',
-    uniswap_v3 = 'uniswap_v3',
-    curve = 'curve',
-    balancer = 'balancer',
-    hiveswap = 'hiveswap'
+// export enum dexName {
+//     pancakeswap = 'pancakeswap',
+//     quickswap = 'quickswap',
+//     sushiswap = 'sushiswap',
+//     uniswap_v2 = 'uniswap_v2',
+//     uniswap_v3 = 'uniswap_v3',
+//     curve = 'curve',
+//     balancer = 'balancer',
+//     hiveswap = 'hiveswap'
+// }
+
+export enum ButterProtocol {
+    UNI_V2 = 'UniswapV2',
+    UNI_V3 = 'UniswapV3',
+    QUICK_V2 = 'Quickswap',
+    SUSHI_V2 = 'Sushiswap',
+    PANCAKE_V2 = 'PancakeswapV2',
+    PANCAKE_V3 = 'PancakeswapV3',
+    CURVE = 'Curve',
+    REF = 'Ref.finance',
+    HIVE_V2 = 'Hiveswap',
+    BALANCER = 'Balancer'
 }

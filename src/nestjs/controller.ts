@@ -8,9 +8,9 @@ export class AppController {
 
   @Get()
   async findAll(@Query('protocol') protocol: string,@Query('chainId')chainId:number):Promise<string> {
-    let dex = protocol.split(',');
+    let protocols = protocol.split(',');
     let returnData : string;
-    await this.appService.getPools(dex,chainId)
+    await this.appService.getPools(protocols,chainId)
     .then((data)=>{
       //console.log('data',data)
       returnData = data;

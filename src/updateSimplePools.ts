@@ -9,18 +9,20 @@ import { HiveSwapSubgraphProvider } from './providers/subgraph-provider/hiveswap
 
 import {ChainId, NETWORK_BSC, NETWORK_ETH, NETWORK_MAP, NETWORK_POLYGON} from './providers/utils/chainId'
 import {RedisClient} from "./redis/client";
+import {PancakeSwapV3SubgraphProvider} from "./providers/subgraph-provider/pancakeswapv3-subgraph-provider";
 const schedule = require('node-schedule');
 
 const PancakeSwapSubgraph_BSC = new PancakeSwapSubgraphProvider(NETWORK_BSC)
+// const PancakeSwapV3Subgraph_BSC = new PancakeSwapV3SubgraphProvider(NETWORK_BSC)
 const HiveSwapSubgraph_MAP = new HiveSwapSubgraphProvider(NETWORK_MAP)
 
 // const SushiSwapSubgraph_ETH = new SushiSwapSubgraphProvider(NETWORK_ETH)
-const UniSwapV2Subgraph_ETH = new UniSwapV2SubgraphProvider(NETWORK_ETH)
+// const UniSwapV2Subgraph_ETH = new UniSwapV2SubgraphProvider(NETWORK_ETH)
 // const UniSwapV3Subgraph_ETH = new UniSwapV3SubgraphProvider(NETWORK_ETH)
 // const CurveApi_ETH = new CurveSubgraphProvider(NETWORK_ETH)
 // // const BalancerSubgraph_ETH = new BalancerSubgraphProvider(ChainId.MAINNET)
 //
-const QuickSwapSubgraph_MATIC = new QuickSwapSubgraphProvider(NETWORK_POLYGON)
+// const QuickSwapSubgraph_MATIC = new QuickSwapSubgraphProvider(NETWORK_POLYGON)
 // const SushiSwapSubgraph_MATIC = new SushiSwapSubgraphProvider(ChainId.POLYGON)
 // const UniSwapV3Subgraph_MATIC = new UniSwapV3SubgraphProvider(ChainId.POLYGON)
 // const CurveApi_MATIC = new CurveSubgraphProvider(ChainId.POLYGON)
@@ -29,17 +31,18 @@ const QuickSwapSubgraph_MATIC = new QuickSwapSubgraphProvider(NETWORK_POLYGON)
 const scheduleTask = () => {
     schedule.scheduleJob('0 */1 * * * *', () => {
         try{
+            // PancakeSwapV3Subgraph_BSC.quickGetPools()
             PancakeSwapSubgraph_BSC.quickGetPools()
             //
             HiveSwapSubgraph_MAP.quickGetPools()
             //
             // SushiSwapSubgraph_ETH.quickGetPools()
-            UniSwapV2Subgraph_ETH.quickGetPools()
+            // UniSwapV2Subgraph_ETH.quickGetPools()
             // UniSwapV3Subgraph_ETH.quickGetPools()
-            // // CurveApi_ETH.getPoolsByApi()
+            // CurveApi_ETH.getPoolsByApi()
             // // BalancerSubgraph_ETH.quickGetPools()
             //
-            QuickSwapSubgraph_MATIC.quickGetPools()
+            // QuickSwapSubgraph_MATIC.quickGetPools()
             // SushiSwapSubgraph_MATIC.quickGetPools()
             // UniSwapV3Subgraph_MATIC.quickGetPools()
             // CurveApi_MATIC.getPoolsByApi()

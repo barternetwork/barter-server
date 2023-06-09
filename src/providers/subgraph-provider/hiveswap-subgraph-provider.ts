@@ -1,7 +1,7 @@
 import { GraphQLClient } from 'graphql-request';
 // /import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
-import { dexName } from '../utils/params'
+import {ButterProtocol} from '../utils/params'
 import { SUBGRAPH_URL_BY_HIVESWAP } from '../utils/url'
 import { ISubgraphProvider,RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
@@ -61,12 +61,12 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.hiveswap,'ETH')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.hiveswap,
+                        name: ButterProtocol.HIVE_V2,
                         chainId :this.chainId,
                         result : res.pairs,
                     }
                     console.log(data)
-                    let key = getSimplePoolRedisKey(this.chainId, dexName.hiveswap)
+                    let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                 });
             },      

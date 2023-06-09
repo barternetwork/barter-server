@@ -1,17 +1,19 @@
 import { GraphQLClient } from 'graphql-request';
 //import { default as retry } from 'async-retry';
 import { ChainId } from '../utils/chainId'
-import { dexName } from '../utils/params'
+import {ButterProtocol} from '../utils/params'
 import { SUBGRAPH_URL_BY_CURVE, API_URL_BY_CURVE } from '../utils/url'
 import { ISubgraphProvider, RawCurveSubgraphPool, RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryCurvePoolGQL, quickQueryCurvePoolGQL } from '../utils/gql'
 import { BarterSwapDB, TableName } from '../../mongodb/client'
+import {RedisClient} from "../../redis/client";
+import {getSimplePoolRedisKey} from "../utils/misc";
 const retry = require('async-retry');
 const axios = require('axios');
 
 export class CurveSubgraphProvider implements ISubgraphProvider {
     private client: GraphQLClient;
-    private DB = new BarterSwapDB();
+    private redis: RedisClient;
 
     constructor(
         private chainId: ChainId,
@@ -23,6 +25,8 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
         }
         this.client = new GraphQLClient(subgraphUrl);
+        this.redis = new RedisClient();
+        this.redis.connect().then(r => {console.log("redis is connected")});
     }
 
     async getPools() {
@@ -33,11 +37,11 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
                 }>(queryCurvePoolGQL(LiquidityMoreThan90Percent.Curve)).then((res) => {
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.curve,
+                        name: ButterProtocol.CURVE,
                         chainId: this.chainId,
                         result: res,
                     }
-                    this.DB.deleteData(TableName.DetailedPools, { name: dexName.curve, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.DetailedPools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.DetailedPools) })
+                    // this.DB.deleteData(TableName.DetailedPools, { name: data.name, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.DetailedPools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.DetailedPools) })
                 });
             },
             {
@@ -59,11 +63,11 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
                 }>(quickQueryCurvePoolGQL(LiquidityMoreThan90Percent.Curve)).then((res) => {
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.curve,
+                        name: ButterProtocol.CURVE,
                         chainId: this.chainId,
                         result: res,
                     }
-                    this.DB.deleteData(TableName.SimplePools, { name: dexName.curve, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
+                    // this.DB.deleteData(TableName.SimplePools, { name: dexName.curve, chainId: this.chainId }, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
                 });
             },
             {
@@ -138,12 +142,16 @@ export class CurveSubgraphProvider implements ISubgraphProvider {
                             if (start == API_URL_BY_CURVE[this.chainId].length){
                                 let data = {
                                     updateTime: Date.parse(new Date().toString()),
-                                    name: dexName.curve,
+                                    name: ButterProtocol.CURVE,
                                     chainId: this.chainId,
                                     result: array,
                                 }
+                                console.log("query curve pools:");
+                                console.log(data.result);
+                                let key = getSimplePoolRedisKey(this.chainId, data.name)
+                                this.redis.set(key, JSON.stringify(data))
                                 //console.log(this.chainId,API_URL_BY_CURVE[this.chainId],API_URL_BY_CURVE[this.chainId].length, data)
-                                this.DB.deleteData(TableName.SimplePools, {name: dexName.curve,chainId: this.chainId}, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })          
+                                // this.DB.deleteData(TableName.SimplePools, {name: dexName.curve,chainId: this.chainId}, true).then(() => { this.DB.insertData(TableName.SimplePools, data) }).catch(() => { console.log("fail to delete data,table name", TableName.SimplePools) })
                             }
                         }).catch((err: any) => { console.log("cannot get data from api,err:", err) })
                 },

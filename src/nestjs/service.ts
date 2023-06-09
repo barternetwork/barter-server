@@ -1,6 +1,5 @@
-import { BarterSwapDB, TableName } from '../mongodb/client'
-import { Injectable } from '@nestjs/common';
-import { dexName } from '../providers/utils/params';
+import {Injectable} from '@nestjs/common';
+import {ButterProtocol} from '../providers/utils/params';
 import {RedisClient} from "../redis/client";
 import {getSimplePoolRedisKey} from "../providers/utils/misc";
 
@@ -10,71 +9,48 @@ redis.connect()
 @Injectable()
 export class AppService {
 
-  async getPools(dex: string[],chainId:number):Promise<string> {
-    let pools = {
-      updateTime:String,
-      pancakeswap: String,
-      quickswap: String,
-      sushiswap: String,
-      uniswap_v2: String,
-      uniswap_v3: String,
-      curve: String,
-      balancer: String,
-      hiveswap: String
-    }
-    let filter = {
-      name: { "$in": dex },
-      chainId: Number(chainId),
-    }
+    async getPools(protocols: string[], chainId: number): Promise<string> {
+        let poolsMap = new Map();
 
-    for (let i = 0; i < dex.length; i++) {
-      let key = getSimplePoolRedisKey(chainId, dex[i])
-      let ret = await redis.get(key);
-      if (ret == null) {
-        continue
-      }
-      let result = JSON.parse(ret);
+        console.log("protocols", protocols)
 
-      try {
-        switch (result.name) {
-          case dexName.uniswap_v3:
-            pools.updateTime = result.updateTime
-            pools.uniswap_v3 = result.result.pools
-            break;
-          case dexName.uniswap_v2:
-            pools.updateTime = result.updateTime
-            pools.uniswap_v2 = result.result.pairs
-            break;
-          case dexName.sushiswap:
-            pools.updateTime = result.updateTime
-            pools.sushiswap = result.result.pairs
-            break;
-          case dexName.quickswap:
-            pools.updateTime = result.updateTime
-            pools.quickswap = result.result.pairs
-            break;
-          case dexName.pancakeswap:
-            pools.updateTime = result.updateTime
-            pools.pancakeswap = result.result.pairs
-            break;
-          case dexName.curve:
-            pools.updateTime = result.updateTime
-            pools.curve = result.result
-            break;
-          case dexName.balancer:
-            pools.updateTime = result.updateTime
-            pools.balancer = result.result
-            break;
-          case dexName.hiveswap:
-            pools.updateTime = result.updateTime
-            pools.hiveswap = result.result;
-            break;
+        for (let i = 0; i < protocols.length; i++) {
+            let key = getSimplePoolRedisKey(chainId, protocols[i])
+            let ret = await redis.get(key);
+            if (ret == null) {
+                continue
+            }
+            let result = JSON.parse(ret);
+
+            poolsMap.set("updateTime", result.updateTime)
+
+            console.log("result", result)
+
+            try {
+                switch (result.name) {
+                    case ButterProtocol.UNI_V3:
+                    case ButterProtocol.PANCAKE_V3:
+                        poolsMap.set(result.name, result.result.pools)
+                        break;
+                    case ButterProtocol.UNI_V2:
+                    case ButterProtocol.SUSHI_V2:
+                    case ButterProtocol.QUICK_V2 :
+                    case ButterProtocol.PANCAKE_V2:
+                        poolsMap.set(result.name, result.result.pairs)
+                        break;
+                    default:
+                        poolsMap.set(result.name, result.result)
+                        break;
+                }
+            } catch (err) {
+                console.log("error by returning redis data,", err)
+            }
         }
-      } catch (err) {
-        console.log("error by returning redis data,", err)
-      }
-    }
 
-    return JSON.stringify(pools);
-  }
+        console.log("poolsMap", poolsMap)
+        const poolsObj = Object.fromEntries(poolsMap);
+        console.log("poolsObj", JSON.stringify(poolsObj))
+
+        return JSON.stringify(poolsObj);
+    }
 }

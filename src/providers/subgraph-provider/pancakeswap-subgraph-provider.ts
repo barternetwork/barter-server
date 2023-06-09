@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { ChainId } from '../utils/chainId'
-import { dexName } from '../utils/params'
+import {ButterProtocol} from '../utils/params'
 import { SUBGRAPH_URL_BY_PANCAKESWAP } from '../utils/url'
 import { ISubgraphProvider,RawBNBV2SubgraphPool } from '../utils/interfaces'
 import {LiquidityMoreThan90Percent, pancakeQuickQueryV2PoolGQL, queryV2PoolGQL, quickQueryV2PoolGQL} from '../utils/gql'
@@ -35,7 +35,7 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                 }>(queryV2PoolGQL(LiquidityMoreThan90Percent.PancakeSwap,'BNB')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.pancakeswap,
+                        name: ButterProtocol.PANCAKE_V2,
                         chainId :this.chainId,
                         result : res,
                     }
@@ -62,13 +62,13 @@ export class PancakeSwapSubgraphProvider implements ISubgraphProvider{
                 }>(pancakeQuickQueryV2PoolGQL(LiquidityMoreThan90Percent.PancakeSwap,'BNB')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.pancakeswap,
+                        name: ButterProtocol.PANCAKE_V2,
                         chainId :this.chainId,
                         result : res,
                     }
                     console.log("query pancake pools costs:", Date.now() - start);
                     console.log(data.result)
-                    let key = getSimplePoolRedisKey(this.chainId, dexName.pancakeswap)
+                    let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                 });
             },      

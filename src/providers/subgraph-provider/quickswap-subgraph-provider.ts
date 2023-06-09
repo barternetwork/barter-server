@@ -1,6 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { ChainId } from '../utils/chainId'
-import { dexName } from '../utils/params'
+import {ButterProtocol} from '../utils/params'
 import { SUBGRAPH_URL_BY_QUICKSWAP } from '../utils/url'
 import { ISubgraphProvider,RawETHV2SubgraphPool } from '../utils/interfaces'
 import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
@@ -34,7 +34,7 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
                 }>(queryV2PoolGQL(LiquidityMoreThan90Percent.QuickSwap,'ETH')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.quickswap,
+                        name: ButterProtocol.QUICK_V2,
                         chainId :this.chainId,
                         result : res,
                     }
@@ -61,13 +61,13 @@ export class QuickSwapSubgraphProvider implements ISubgraphProvider{
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.QuickSwap,'ETH')).then((res)=>{
                     let data = {
                         updateTime: Date.parse(new Date().toString()),
-                        name: dexName.quickswap,
+                        name: ButterProtocol.QUICK_V2,
                         chainId :this.chainId,
                         result : res,
                     }
                     console.log("query quick pools costs:", Date.now() - start);
                     console.log(data.result)
-                    let key = getSimplePoolRedisKey(this.chainId, dexName.quickswap)
+                    let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                     // this.DB.deleteData(TableName.SimplePools,{name: dexName.quickswap,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})
                 });

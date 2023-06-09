@@ -79,6 +79,22 @@ export type RawBNBV2SubgraphPool = {
   trackedReserveBNB: string;
 };
 
+export type RawBNBV3SubgraphPool = {
+  id: string;
+  feeTier: string;
+  liquidity: string;
+  token0: {
+    symbol: string;
+    id: string;
+  };
+  token1: {
+    symbol: string;
+    id: string;
+  };
+  totalValueLockedUSD: string;
+  totalValueLockedETH: string;
+};
+
 export type RawCurveSubgraphPool = {
   address: string,
   assetType: string,
