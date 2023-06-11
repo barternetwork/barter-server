@@ -1,4 +1,4 @@
-import { PancakeSwapSubgraphProvider } from './providers/subgraph-provider/pancakeswap-subgraph-provider'
+import { PancakeSwapV2SubgraphProvider } from './providers/subgraph-provider/pancakeswapv2-subgraph-provider'
 import { QuickSwapSubgraphProvider } from './providers/subgraph-provider/quickswap-subgraph-provider'
 import { SushiSwapSubgraphProvider } from './providers/subgraph-provider/sushiswap-subgraph-provider'
 import { UniSwapV2SubgraphProvider } from './providers/subgraph-provider/uniswapv2-subgraph-provider'
@@ -10,7 +10,7 @@ import { ChainId } from './providers/utils/chainId'
 const schedule = require('node-schedule');
 
 
-const PancakeSwapSubgraph_BSC = new PancakeSwapSubgraphProvider(ChainId.BSC)
+const PancakeSwapSubgraph_BSC = new PancakeSwapV2SubgraphProvider(ChainId.BSC)
 
 const SushiSwapSubgraph_ETH = new SushiSwapSubgraphProvider(ChainId.MAINNET)
 const UniSwapV2Subgraph_ETH = new UniSwapV2SubgraphProvider(ChainId.MAINNET)

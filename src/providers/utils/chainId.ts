@@ -1,5 +1,3 @@
-const test = true;
-
 export enum ChainId {
     MAINNET = 1,
     GÖRLI = 5,
@@ -11,8 +9,9 @@ export enum ChainId {
     MAP_TEST = 212
 }
 
-export const NETWORK_BSC: ChainId = test ? ChainId.BSC_TEST : ChainId.BSC;
-export const NETWORK_ETH: ChainId = test ? ChainId.GÖRLI : ChainId.MAINNET;
-export const NETWORK_POLYGON: ChainId = test ? ChainId.POLYGON_MUMBAI : ChainId.POLYGON;
-export const NETWORK_MAP: ChainId = test ? ChainId.MAP_TEST : ChainId.MAP;
-
+export function IS_ON_TESTNET(): boolean {
+    if (process.env.TESTNET == undefined) {
+        return true;
+    }
+    return JSON.parse(process.env.TESTNET);
+}

@@ -82,6 +82,8 @@ export function quickQueryV2PoolGQL(first:number, tokenType:string) {
         id
         symbol
       }
+      reserve0
+      reserve1
       totalSupply
       reserve${tokenType}
       reserveUSD
@@ -106,6 +108,8 @@ export function pancakeQuickQueryV2PoolGQL(first:number, tokenType:string) {
         id
         symbol
       }
+      reserve0
+      reserve1
       totalSupply
       reserve${tokenType}
       reserveUSD
@@ -123,6 +127,8 @@ export function quickQueryV3PoolGQL(first:number) {
               id
               feeTier
               liquidity
+              sqrtPrice
+              tick
               token0 {
                 id
                 symbol
@@ -146,6 +152,8 @@ export function pancakeQuickQueryV3PoolGQL(first:number) {
               id
               feeTier
               liquidity
+              sqrtPrice
+              tick
               token0 {
                 id
                 symbol

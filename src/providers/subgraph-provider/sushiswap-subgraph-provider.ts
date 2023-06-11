@@ -15,6 +15,7 @@ export class SushiSwapSubgraphProvider implements ISubgraphProvider{
 
     constructor(    
         private chainId: ChainId,
+        private redisClient: RedisClient,
         private retries = 2,     //The maximum amount of times to retry the operation.
         private maxTimeout = 5000,  //The maximum number of milliseconds between two retries.
     ){
@@ -23,8 +24,7 @@ export class SushiSwapSubgraphProvider implements ISubgraphProvider{
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
           }
         this.client = new GraphQLClient(subgraphUrl);
-        this.redis = new RedisClient();
-        this.redis.connect().then(r => {console.log("redis is connected")});
+        this.redis = redisClient;
     }   
 
     async getPools(){
@@ -66,7 +66,6 @@ export class SushiSwapSubgraphProvider implements ISubgraphProvider{
                         result : res,
                     }
                     console.log("query sushiswap pools costs:", Date.now() - start);
-                    console.log(data.result);
                     let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                 });

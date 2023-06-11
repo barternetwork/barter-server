@@ -1,60 +1,80 @@
-import { PancakeSwapSubgraphProvider } from './providers/subgraph-provider/pancakeswap-subgraph-provider'
-import { QuickSwapSubgraphProvider } from './providers/subgraph-provider/quickswap-subgraph-provider'
-import { SushiSwapSubgraphProvider } from './providers/subgraph-provider/sushiswap-subgraph-provider'
-import { UniSwapV2SubgraphProvider } from './providers/subgraph-provider/uniswapv2-subgraph-provider'
-import { UniSwapV3SubgraphProvider } from './providers/subgraph-provider/uniswapv3-subgraph-provider'
-import { CurveSubgraphProvider } from './providers/subgraph-provider/curvefi-subgraph-provider'
-import { BalancerSubgraphProvider } from './providers/subgraph-provider/balancer-subgraph-provider'
-import { HiveSwapSubgraphProvider } from './providers/subgraph-provider/hiveswap-subgraph-provider'
+import {PancakeSwapV2SubgraphProvider} from './providers/subgraph-provider/pancakeswapv2-subgraph-provider'
+import {SushiSwapSubgraphProvider} from './providers/subgraph-provider/sushiswap-subgraph-provider'
+import {UniSwapV2SubgraphProvider} from './providers/subgraph-provider/uniswapv2-subgraph-provider'
+import {UniSwapV3SubgraphProvider} from './providers/subgraph-provider/uniswapv3-subgraph-provider'
 
-import {ChainId, NETWORK_BSC, NETWORK_ETH, NETWORK_MAP, NETWORK_POLYGON} from './providers/utils/chainId'
+import {ChainId, IS_ON_TESTNET} from './providers/utils/chainId'
 import {RedisClient} from "./redis/client";
 import {PancakeSwapV3SubgraphProvider} from "./providers/subgraph-provider/pancakeswapv3-subgraph-provider";
+import {HiveSwapSubgraphProvider} from "./providers/subgraph-provider/hiveswap-subgraph-provider";
+import {QuickSwapSubgraphProvider} from "./providers/subgraph-provider/quickswap-subgraph-provider";
+
 const schedule = require('node-schedule');
 
-const PancakeSwapSubgraph_BSC = new PancakeSwapSubgraphProvider(NETWORK_BSC)
-// const PancakeSwapV3Subgraph_BSC = new PancakeSwapV3SubgraphProvider(NETWORK_BSC)
-const HiveSwapSubgraph_MAP = new HiveSwapSubgraphProvider(NETWORK_MAP)
+const redis = new RedisClient();
+redis.connect().then(() => {
+    console.log("redis connected")
+    scheduleTask();
+}).catch(() => {
+    console.log("redis connect failed")
+});
 
-// const SushiSwapSubgraph_ETH = new SushiSwapSubgraphProvider(NETWORK_ETH)
-// const UniSwapV2Subgraph_ETH = new UniSwapV2SubgraphProvider(NETWORK_ETH)
-// const UniSwapV3Subgraph_ETH = new UniSwapV3SubgraphProvider(NETWORK_ETH)
+
 // const CurveApi_ETH = new CurveSubgraphProvider(NETWORK_ETH)
-// // const BalancerSubgraph_ETH = new BalancerSubgraphProvider(ChainId.MAINNET)
-//
-// const QuickSwapSubgraph_MATIC = new QuickSwapSubgraphProvider(NETWORK_POLYGON)
-// const SushiSwapSubgraph_MATIC = new SushiSwapSubgraphProvider(ChainId.POLYGON)
-// const UniSwapV3Subgraph_MATIC = new UniSwapV3SubgraphProvider(ChainId.POLYGON)
+// const BalancerSubgraph_ETH = new BalancerSubgraphProvider(ChainId.MAINNET)
 // const CurveApi_MATIC = new CurveSubgraphProvider(ChainId.POLYGON)
 // const BalancerSubgraph_MATIC = new BalancerSubgraphProvider(ChainId.POLYGON)
 
 const scheduleTask = () => {
-    schedule.scheduleJob('0 */1 * * * *', () => {
-        try{
-            // PancakeSwapV3Subgraph_BSC.quickGetPools()
-            PancakeSwapSubgraph_BSC.quickGetPools()
-            //
-            HiveSwapSubgraph_MAP.quickGetPools()
-            //
-            // SushiSwapSubgraph_ETH.quickGetPools()
-            // UniSwapV2Subgraph_ETH.quickGetPools()
-            // UniSwapV3Subgraph_ETH.quickGetPools()
-            // CurveApi_ETH.getPoolsByApi()
-            // // BalancerSubgraph_ETH.quickGetPools()
-            //
-            // QuickSwapSubgraph_MATIC.quickGetPools()
-            // SushiSwapSubgraph_MATIC.quickGetPools()
-            // UniSwapV3Subgraph_MATIC.quickGetPools()
-            // CurveApi_MATIC.getPoolsByApi()
-            // BalancerSubgraph_MATIC.quickGetPools()
-        }catch(err){
-            console.log("fail to update SimplePools ,error:",err)
+    let subgraphProviders = [];
+
+    if (IS_ON_TESTNET()) {
+        subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.GÖRLI, redis))
+
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
+
+        // subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
+        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
+        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC_TEST, redis))
+
+        // subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON_MUMBAI, redis))
+
+        subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP_TEST, redis))
+
+    } else {
+        subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.MAINNET, redis))
+
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.MAINNET, redis))
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.BSC, redis))
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.POLYGON, redis))
+
+        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.MAINNET, redis))
+        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.BSC, redis))
+        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
+
+        subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
+
+        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.MAINNET, redis))
+        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC, redis))
+
+        subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON, redis))
+
+        subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
+    }
+
+    schedule.scheduleJob('0 */2 * * * *', async () => {
+        try {
+            for (let provider of subgraphProviders) {
+                await provider.quickGetPools()
+            }
+        } catch (err) {
+            console.log("fail to update SimplePools ,error:", err)
         }
     });
 
 }
 
-scheduleTask();
+// scheduleTask();
 
 process.on('uncaughtException', function (err) {
     console.log('Caught exception: ' + err);

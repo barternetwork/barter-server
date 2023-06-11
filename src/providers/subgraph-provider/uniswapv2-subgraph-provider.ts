@@ -15,6 +15,7 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
     
     constructor(    
         private chainId: ChainId,
+        private redisClient: RedisClient,
         private retries = 2,     //The maximum amount of times to retry the operation.
         private maxTimeout = 5000,  //The maximum number of milliseconds between two retries.
     ){
@@ -23,8 +24,7 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
           }
         this.client = new GraphQLClient(subgraphUrl);
-        this.redis = new RedisClient();
-        this.redis.connect().then(r => {console.log("redis is connected")});
+        this.redis = redisClient;
     }   
 
     async getPools(){
@@ -67,7 +67,6 @@ export class UniSwapV2SubgraphProvider implements ISubgraphProvider{
                         result : res,
                     }
                     console.log("query uniswap v2 pools costs:", Date.now() - start);
-                    console.log(data.result);
                     let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                     // this.DB.deleteData(TableName.SimplePools,{name: dexName.uniswap_v2,chainId: this.chainId},true).then(()=>{this.DB.insertData(TableName.SimplePools,data)}).catch(()=>{console.log("fail to delete data,table name",TableName.SimplePools)})

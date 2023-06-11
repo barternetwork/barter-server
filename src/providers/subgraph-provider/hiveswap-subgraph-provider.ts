@@ -15,6 +15,7 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
     
     constructor(    
         private chainId: ChainId,
+        private redisClient: RedisClient,
         private retries = 2,     //The maximum amount of times to retry the operation.
         private maxTimeout = 5000,  //The maximum number of milliseconds between two retries.
     ){
@@ -23,8 +24,7 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
             throw new Error(`No subgraph url for chain id: ${this.chainId}`);
           }
         this.client = new GraphQLClient(subgraphUrl);
-        this.redis = new RedisClient();
-        this.redis.connect();
+        this.redis = redisClient;
     }   
 
     async getPools(){
@@ -56,6 +56,7 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
     async quickGetPools(){
         await retry(
             async () => {
+                let start = Date.now();
                 await this.client.request<{
                     pairs: RawETHV2SubgraphPool[];
                 }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.hiveswap,'ETH')).then((res)=>{
@@ -65,7 +66,7 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
                         chainId :this.chainId,
                         result : res.pairs,
                     }
-                    console.log(data)
+                    console.log("query hiveswap pools costs:", Date.now() - start);
                     let key = getSimplePoolRedisKey(this.chainId, data.name)
                     this.redis.set(key, JSON.stringify(data))
                 });
