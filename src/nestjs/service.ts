@@ -24,8 +24,6 @@ export class AppService {
 
             poolsMap.set("updateTime", result.updateTime)
 
-            console.log("result", result)
-
             try {
                 switch (result.name) {
                     case ButterProtocol.UNI_V3:
@@ -47,9 +45,7 @@ export class AppService {
             }
         }
 
-        console.log("poolsMap", poolsMap)
         const poolsObj = Object.fromEntries(poolsMap);
-        console.log("poolsObj", JSON.stringify(poolsObj))
 
         return JSON.stringify(poolsObj);
     }

@@ -1,13 +1,13 @@
 import { gql } from 'graphql-request';
 
 export enum LiquidityMoreThan90Percent {
-  QuickSwap = 500,
-  SushiSwap = 500,
-  PancakeSwap = 300,
-  PancakeSwap_V3 = 600,
+  QuickSwap = 200,
+  SushiSwap = 200,
+  PancakeSwap = 200,
+  PancakeSwap_V3 = 500,
   ApeSwap = 100,
-  UniSwap_V2 = 300,
-  UniSwap_V3 = 600,
+  UniSwap_V2 = 200,
+  UniSwap_V3 = 500,
   Curve = 44,
   Balancer = 15,
   hiveswap = 100
