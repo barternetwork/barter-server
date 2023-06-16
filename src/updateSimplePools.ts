@@ -29,15 +29,16 @@ const scheduleTask = () => {
     let subgraphProviders = [];
 
     if (IS_ON_TESTNET()) {
-        subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.GÖRLI, redis))
-
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
-
-        // subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
+        // subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.GÖRLI, redis))
+        //
+        // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
+        //
+        subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC_TEST, redis))
+        //
+        // subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
         subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC_TEST, redis))
 
-        // subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON_MUMBAI, redis))
+        subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON_MUMBAI, redis))
 
         subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP_TEST, redis))
 

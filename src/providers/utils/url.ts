@@ -10,7 +10,7 @@ export const SUBGRAPH_URL_BY_SUSHISWAP: { [chainId in ChainId]?: string } = {
         'https://api.thegraph.com/subgraphs/name/sushiswap/bsc-exchange',
 };
 
-// TODO: Deploy on Ethereum mainnet/ Goerli testnet/ BSC testnet
+// TODO: Deploy on Ethereum mainnet/ Goerli testnet
 export const SUBGRAPH_URL_BY_PANCAKESWAP_V2: { [chainId in ChainId]?: string } = {
     // [ChainId.MAINNET]:
     //     'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange',
@@ -19,7 +19,7 @@ export const SUBGRAPH_URL_BY_PANCAKESWAP_V2: { [chainId in ChainId]?: string } =
     [ChainId.BSC]:
         'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-cake-pairs',
     [ChainId.BSC_TEST]:
-        'https://api.thegraph.com/subgraphs/name/pandarr007/pancakeswap',
+        'https://api.thegraph.com/subgraphs/name/pandarr007/pancakeswap-chapel',
 };
 
 // https://github.com/pancakeswap/pancake-subgraph
@@ -34,7 +34,6 @@ export const SUBGRAPH_URL_BY_PANCAKESWAP_V3: { [chainId in ChainId]?: string } =
         'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
 };
 
-// TODO: Deploy on Polygon Mumbai testnet
 export const SUBGRAPH_URL_BY_QUICKSWAP: { [chainId in ChainId]?: string } = {
     [ChainId.POLYGON]:
         'https://api.thegraph.com/subgraphs/name/sameepsi/quickswap06',
