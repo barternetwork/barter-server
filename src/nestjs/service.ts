@@ -23,26 +23,27 @@ export class AppService {
             let result = JSON.parse(ret);
 
             poolsMap.set("updateTime", result.updateTime)
+            poolsMap.set(result.name, result.result)
 
-            try {
-                switch (result.name) {
-                    case ButterProtocol.UNI_V3:
-                    case ButterProtocol.PANCAKE_V3:
-                        poolsMap.set(result.name, result.result.pools)
-                        break;
-                    case ButterProtocol.UNI_V2:
-                    case ButterProtocol.SUSHI_V2:
-                    case ButterProtocol.QUICK_V2 :
-                    case ButterProtocol.PANCAKE_V2:
-                        poolsMap.set(result.name, result.result.pairs)
-                        break;
-                    default:
-                        poolsMap.set(result.name, result.result)
-                        break;
-                }
-            } catch (err) {
-                console.log("error by returning redis data,", err)
-            }
+            // try {
+            //     switch (result.name) {
+            //         case ButterProtocol.UNI_V3:
+            //         case ButterProtocol.PANCAKE_V3:
+            //             poolsMap.set(result.name, result.result.pools)
+            //             break;
+            //         case ButterProtocol.UNI_V2:
+            //         case ButterProtocol.SUSHI_V2:
+            //         case ButterProtocol.QUICK_V2 :
+            //         case ButterProtocol.PANCAKE_V2:
+            //             poolsMap.set(result.name, result.result.pairs)
+            //             break;
+            //         default:
+            //             poolsMap.set(result.name, result.result)
+            //             break;
+            //     }
+            // } catch (err) {
+            //     console.log("error by returning redis data,", err)
+            // }
         }
 
         const poolsObj = Object.fromEntries(poolsMap);

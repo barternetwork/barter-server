@@ -4,7 +4,7 @@ import { ChainId } from '../utils/chainId'
 import {ButterProtocol} from '../utils/params'
 import { SUBGRAPH_URL_BY_HIVESWAP } from '../utils/url'
 import { ISubgraphProvider,RawETHV2SubgraphPool } from '../utils/interfaces'
-import { LiquidityMoreThan90Percent, queryV2PoolGQL,quickQueryV2PoolGQL } from '../utils/gql'
+import {LiquidityMoreThan90Percent, PageSize, queryV2PoolGQL, quickQueryV2PoolGQL} from '../utils/gql'
 import { BarterSwapDB,TableName } from '../../mongodb/client'
 import {getSimplePoolRedisKey} from "../utils/misc";
 import {RedisClient} from "../../redis/client";
@@ -53,29 +53,37 @@ export class HiveSwapSubgraphProvider implements ISubgraphProvider{
 
     }
 
-    async quickGetPools(){
+    async quickGetPools() {
         await retry(
             async () => {
                 let start = Date.now();
-                await this.client.request<{
-                    pairs: RawETHV2SubgraphPool[];
-                }>(quickQueryV2PoolGQL(LiquidityMoreThan90Percent.hiveswap,'ETH')).then((res)=>{
-                    let data = {
-                        updateTime: Date.parse(new Date().toString()),
-                        name: ButterProtocol.HIVE_V2,
-                        chainId :this.chainId,
-                        result : res.pairs,
+                let pools = []
+                let skip = 0;
+                while (true) {
+                    const {pairs: poolsAtCurrentPage} = await this.client.request<{
+                        pairs: RawETHV2SubgraphPool[];
+                    }>(quickQueryV2PoolGQL(PageSize, 'ETH', skip));
+                    pools = [...pools, ...poolsAtCurrentPage]
+                    skip += PageSize
+                    if (pools.length >= LiquidityMoreThan90Percent.Hiveswap || poolsAtCurrentPage.length < PageSize) {
+                        break
                     }
-                    console.log("query hiveswap pools costs:", Date.now() - start);
-                    let key = getSimplePoolRedisKey(this.chainId, data.name)
-                    this.redis.set(key, JSON.stringify(data))
-                });
-            },      
+                }
+                let data = {
+                    updateTime: Date.parse(new Date().toString()),
+                    name: ButterProtocol.HIVE_V2,
+                    chainId: this.chainId,
+                    result: pools,
+                }
+                console.log(`query ${pools.length} hiveswap v2 pools on chain ${this.chainId} costs:`, Date.now() - start);
+                let key = getSimplePoolRedisKey(this.chainId, data.name)
+                this.redis.set(key, JSON.stringify(data))
+            },
             {
-                retries: this.retries,       
+                retries: this.retries,
                 maxTimeout: this.maxTimeout,
                 onRetry: (err, retry) => {
-                    console.log("error message:",err,",retry times:",retry)
+                    console.log("error message:", err, ",retry times:", retry)
                 },
             }
         );

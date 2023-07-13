@@ -12,12 +12,12 @@ export const SUBGRAPH_URL_BY_SUSHISWAP: { [chainId in ChainId]?: string } = {
 
 // TODO: Deploy on Ethereum mainnet/ Goerli testnet
 export const SUBGRAPH_URL_BY_PANCAKESWAP_V2: { [chainId in ChainId]?: string } = {
-    // [ChainId.MAINNET]:
-    //     'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange',
+    [ChainId.MAINNET]:
+        'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
     // [ChainId.GÖRLI]:
     //     'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-goerli',
     [ChainId.BSC]:
-        'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-cake-pairs',
+        'https://data-platform.nodereal.io/graph/v1/916f13913fdd47dabe03cd5199845e88/projects/pancakeswap',
     [ChainId.BSC_TEST]:
         'https://api.thegraph.com/subgraphs/name/pandarr007/pancakeswap-chapel',
 };
@@ -44,7 +44,6 @@ export const SUBGRAPH_URL_BY_QUICKSWAP: { [chainId in ChainId]?: string } = {
 // TODO: Deploy on BSC and Polygon
 export const SUBGRAPH_URL_BY_UNISWAP_V2: { [chainId in ChainId]?: string } = {
     [ChainId.MAINNET]:
-    // 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
         'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v2-dev',
     [ChainId.GÖRLI]:
         'https://api.thegraph.com/subgraphs/name/pandarr007/uniswap-v2-goerli',

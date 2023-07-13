@@ -15,8 +15,8 @@ const redis = new RedisClient();
 redis.connect().then(() => {
     console.log("redis connected")
     scheduleTask();
-}).catch(() => {
-    console.log("redis connect failed")
+}).catch((err) => {
+    console.log("redis connect failed", err)
 });
 
 
@@ -25,7 +25,7 @@ redis.connect().then(() => {
 // const CurveApi_MATIC = new CurveSubgraphProvider(ChainId.POLYGON)
 // const BalancerSubgraph_MATIC = new BalancerSubgraphProvider(ChainId.POLYGON)
 
-const scheduleTask = () => {
+const scheduleTask = async () => {
     let subgraphProviders = [];
 
     if (IS_ON_TESTNET()) {
@@ -33,6 +33,8 @@ const scheduleTask = () => {
         //
         // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
         //
+        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON_MUMBAI, redis))
+
         subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC_TEST, redis))
         //
         // subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
@@ -53,6 +55,7 @@ const scheduleTask = () => {
         subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.BSC, redis))
         subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
 
+        subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.MAINNET, redis))
         subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
 
         subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.MAINNET, redis))
@@ -63,7 +66,7 @@ const scheduleTask = () => {
         subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
     }
 
-    schedule.scheduleJob('0 */2 * * * *', async () => {
+    schedule.scheduleJob('0 */5 * * * *', async () => {
         try {
             for (let provider of subgraphProviders) {
                 await provider.quickGetPools()

@@ -1,17 +1,19 @@
 import { gql } from 'graphql-request';
 
 export enum LiquidityMoreThan90Percent {
-  QuickSwap = 200,
-  SushiSwap = 200,
-  PancakeSwap = 200,
-  PancakeSwap_V3 = 500,
+  QuickSwap = 3000,
+  SushiSwap = 3000,
+  PancakeSwap_V2 = 2000,
+  PancakeSwap_V3 = 3000,
   ApeSwap = 100,
-  UniSwap_V2 = 200,
-  UniSwap_V3 = 500,
+  UniSwap_V2 = 3000,
+  UniSwap_V3 = 3000,
   Curve = 44,
   Balancer = 15,
-  hiveswap = 100
+  Hiveswap = 1000
 }
+
+export const PageSize = 1000;
 
 // gql needed to query graph data
 
@@ -68,11 +70,11 @@ export function queryV3PoolGQL(first:number) {
 `;
 }
 
-export function quickQueryV2PoolGQL(first:number, tokenType:string) {
+export function quickQueryV2PoolGQL(first:number, tokenType:string, skip:number) {
 
   return gql`
 {
-    pairs(first: ${first}, orderBy: trackedReserve${tokenType}, orderDirection: desc) {
+    pairs(first: ${first}, orderBy: trackedReserve${tokenType}, orderDirection: desc, skip: ${skip}) {
       id
       token0 {
         id
@@ -94,11 +96,11 @@ export function quickQueryV2PoolGQL(first:number, tokenType:string) {
 
 }
 
-export function pancakeQuickQueryV2PoolGQL(first:number, tokenType:string) {
+export function pancakeQuickQueryV2PoolGQL(first:number, tokenType:string, skip:number) {
 
   return gql`
 {
-    pairs(first: ${first}, orderBy: reserve${tokenType}, orderDirection: desc) {
+    pairs(first: ${first}, orderBy: trackedReserve${tokenType}, orderDirection: desc, skip: ${skip}) {
       id
       token0 {
         id
@@ -119,11 +121,37 @@ export function pancakeQuickQueryV2PoolGQL(first:number, tokenType:string) {
 `;
 }
 
-export function quickQueryV3PoolGQL(first:number) {
+
+export function pancakeQuickQueryV2PoolGQL2( tokenType:string) {
+
+  return gql`
+{
+    pairs(first: $first, where: { id_gt: "$id" }) {
+      id
+      token0 {
+        id
+        symbol
+      }
+      token1 {
+        id
+        symbol
+      }
+      reserve0
+      reserve1
+      totalSupply
+      reserve${tokenType}
+      reserveUSD
+      trackedReserve${tokenType}
+    }
+}
+`;
+}
+
+export function quickQueryV3PoolGQL(first:number, skip:number) {
 
   return  gql`
         {
-            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc) {
+            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc, skip: ${skip}) {
               id
               feeTier
               liquidity
@@ -144,11 +172,11 @@ export function quickQueryV3PoolGQL(first:number) {
 `;
 }
 
-export function pancakeQuickQueryV3PoolGQL(first:number) {
+export function pancakeQuickQueryV3PoolGQL(first:number, skip:number) {
 
   return  gql`
         {
-            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc) {
+            pools(first: ${first}, orderBy: totalValueLockedUSD, orderDirection: desc, skip: ${skip}) {
               id
               feeTier
               liquidity
