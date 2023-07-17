@@ -29,10 +29,11 @@ const scheduleTask = async () => {
     let subgraphProviders = [];
 
     if (IS_ON_TESTNET()) {
-        // subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.GÖRLI, redis))
+        subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.GÖRLI, redis))
         //
-        // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.GÖRLI, redis))
         //
+        // subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.GÖRLI, redis))
         // subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON_MUMBAI, redis))
 
         subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC_TEST, redis))
@@ -66,7 +67,7 @@ const scheduleTask = async () => {
         subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
     }
 
-    schedule.scheduleJob('0 */1 * * * *', async () => {
+    schedule.scheduleJob('0 */5 * * * *', async () => {
         try {
             for (let provider of subgraphProviders) {
                 await provider.quickGetPools()

@@ -58,6 +58,8 @@ export const SUBGRAPH_URL_BY_UNISWAP_V3: { [chainId in ChainId]?: string } = {
         'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-bsc',
     [ChainId.POLYGON]:
         'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-polygon',
+    [ChainId.POLYGON_MUMBAI]:
+        'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-mumbai',
 };
 
 export const SUBGRAPH_URL_BY_CURVE: { [chainId in ChainId]?: string } = {
