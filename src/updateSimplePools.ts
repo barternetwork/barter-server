@@ -47,21 +47,16 @@ const scheduleTask = async () => {
 
     } else {
         subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.MAINNET, redis))
-
         subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.MAINNET, redis))
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.POLYGON, redis))
-
         subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.MAINNET, redis))
+
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.BSC, redis))
         subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
-
-        subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.MAINNET, redis))
         subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
-
-        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.MAINNET, redis))
         subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC, redis))
 
+        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.POLYGON, redis))
+        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
         subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON, redis))
 
         subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
