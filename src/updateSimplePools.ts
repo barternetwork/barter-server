@@ -63,12 +63,12 @@ const scheduleTask = async () => {
     }
 
     schedule.scheduleJob('0 */5 * * * *', async () => {
-        try {
-            for (let provider of subgraphProviders) {
+        for (let provider of subgraphProviders) {
+            try {
                 await provider.quickGetPools()
+            } catch (e) {
+                console.log("quickGetPools error", e)
             }
-        } catch (err) {
-            console.log("fail to update SimplePools ,error:", err)
         }
     });
 
