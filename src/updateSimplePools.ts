@@ -8,6 +8,7 @@ import {RedisClient} from "./redis/client";
 import {PancakeSwapV3SubgraphProvider} from "./providers/subgraph-provider/pancakeswapv3-subgraph-provider";
 import {HiveSwapSubgraphProvider} from "./providers/subgraph-provider/hiveswap-subgraph-provider";
 import {QuickSwapSubgraphProvider} from "./providers/subgraph-provider/quickswap-subgraph-provider";
+import {Klayswapv2Provider} from "./providers/subgraph-provider/klayswapv2-provider";
 
 const schedule = require('node-schedule');
 
@@ -46,31 +47,41 @@ const scheduleTask = async () => {
         subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP_TEST, redis))
 
     } else {
-        subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.MAINNET, redis))
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.MAINNET, redis))
-        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.MAINNET, redis))
+        // subgraphProviders.push(new UniSwapV2SubgraphProvider(ChainId.MAINNET, redis))
+        // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.MAINNET, redis))
+        // subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.MAINNET, redis))
+        //
+        // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.BSC, redis))
+        // subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.BSC, redis))
+        // subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
+        // subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC, redis))
+        //
+        // subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.POLYGON, redis))
+        // subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
+        // subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON, redis))
 
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new PancakeSwapV2SubgraphProvider(ChainId.BSC, redis))
-        subgraphProviders.push(new PancakeSwapV3SubgraphProvider(ChainId.BSC, redis))
 
-        subgraphProviders.push(new UniSwapV3SubgraphProvider(ChainId.POLYGON, redis))
-        subgraphProviders.push(new SushiSwapSubgraphProvider(ChainId.POLYGON, redis))
-        subgraphProviders.push(new QuickSwapSubgraphProvider(ChainId.POLYGON, redis))
+        subgraphProviders.push(new Klayswapv2Provider(ChainId.KLAYTN, redis))
 
-        subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
+        // subgraphProviders.push(new HiveSwapSubgraphProvider(ChainId.MAP, redis))
+    }
+    for (let provider of subgraphProviders) {
+        try {
+            await provider.quickGetPools()
+        } catch (e) {
+            console.log("quickGetPools error", e)
+        }
     }
 
-    schedule.scheduleJob('0 */5 * * * *', async () => {
-        for (let provider of subgraphProviders) {
-            try {
-                await provider.quickGetPools()
-            } catch (e) {
-                console.log("quickGetPools error", e)
-            }
-        }
-    });
+    // schedule.scheduleJob('0 */1 * * * *', async () => {
+    //     for (let provider of subgraphProviders) {
+    //         try {
+    //             await provider.quickGetPools()
+    //         } catch (e) {
+    //             console.log("quickGetPools error", e)
+    //         }
+    //     }
+    // });
 
 }
 

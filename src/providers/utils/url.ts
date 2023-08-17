@@ -91,6 +91,18 @@ export const SUBGRAPH_URL_BY_HIVESWAP: { [chainId in ChainId]?: string } = {
         'http://8.222.255.78:8000/subgraphs/name/testnet/hiveswap2',
 };
 
+export const RECENT_POOL_URL_BY_KLAYSWAP: { [chainId in ChainId]?: string } = {
+    [ChainId.KLAYTN]: 'https://ss.klayswap.com/stat/recentPoolInfo.min.json',
+}
+
+export const CONCENTRATED_POOL_URL_BY_KLAYSWAP: { [chainId in ChainId]?: string } = {
+    [ChainId.KLAYTN]: 'https://ss.klayswap.com/stat/concentratedPoolInfo.json',
+}
+
+export const TOKEN_URL_BY_KLAYSWAP: { [chainId in ChainId]?: string } = {
+    [ChainId.KLAYTN]: 'https://ss.klayswap.com/stat/tokenInfo.min.json',
+}
+
 export const CHAIN_RPC: { [chainId in ChainId]?: string } = {
     [ChainId.MAINNET]:
         'https://mainnet.infura.io/v3/8cce6b470ad44fb5a3621aa34243647f',

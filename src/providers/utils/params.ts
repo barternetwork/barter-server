@@ -33,4 +33,5 @@ export enum ButterProtocol {
     HIVE_V2 = 'Hiveswap',
     BALANCER = 'Balancer',
     DIRECT = '',
+    KLAY_V2 = 'KlayswapV2',
 }

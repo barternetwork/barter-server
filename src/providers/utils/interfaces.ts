@@ -43,8 +43,11 @@ export type RawETHV2SubgraphPool = {
     symbol: string;
     id: string;
   };
+  reserve0: string
+  reserve1: string
   totalSupply: string;
   reserveETH: string;
+  reserveUSD: string;
   trackedReserveETH: string;
 };
 

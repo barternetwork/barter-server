@@ -6,7 +6,8 @@ export enum ChainId {
     BSC = 56,
     BSC_TEST = 97,
     MAP = 22776,
-    MAP_TEST = 212
+    MAP_TEST = 212,
+    KLAYTN = 8217,
 }
 
 export function IS_ON_TESTNET(): boolean {
